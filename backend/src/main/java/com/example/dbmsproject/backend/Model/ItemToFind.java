@@ -13,14 +13,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
-@NoArgsConstructor
-@Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Entity
 @Table(name = "ITEM_TO_FIND")
 public class ItemToFind {
     @Id
@@ -28,9 +30,11 @@ public class ItemToFind {
     private Long iid;
 
     @Column(name = "NAME", nullable = false)
+    @NotEmpty
     private String name;
     
     @Column(name = "TYPE", nullable = false)
+    @NotEmpty
     private String type;
 
     @Column(name = "PHOTO", nullable = true)
@@ -39,18 +43,21 @@ public class ItemToFind {
     @Column(name = "REMARK", nullable = true)
     private String remark;
 
-    @Column(name = "POST_DATE", nullable = false, columnDefinition = "timestamp not null default current_timestamp")
-    @CreatedDate
-    private Date createTime;
+    @Column(name = "POST_TIME", nullable = false)
+    @NonNull
+    private String postTime;
 
     @Column(name = "LAST_SEEN_TIME",nullable = true)
-    private Date lastSeenTime;
+    private String lastSeenTime;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "USER_ID",nullable = false, referencedColumnName = "uid")
+    @NonNull
     private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "LAST_SEEN_PLACE_ID", nullable = true, referencedColumnName = "pid")
     private Place lastSeenPlace;
+
+    
 }

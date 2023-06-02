@@ -1,6 +1,6 @@
 package com.example.dbmsproject.backend.Model;
 
-import java.util.Date;
+
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -10,24 +10,28 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "USER")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
     @Column(name = "NAME" , nullable = false)
+    @NotEmpty
     private String name;
-
+    
     @Column(name = "CREATE_DATE")
-    private Date createDate;
+    private String createDate;
 
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "CON_ID", referencedColumnName = "cid")

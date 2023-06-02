@@ -6,16 +6,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Data
 @Table(name = "PLACE")
-@AllArgsConstructor
-
 public class Place {
 
     @Id
@@ -23,6 +23,7 @@ public class Place {
     private Long pid;
 
     @Column(name = "NAME" , nullable = false)
+    @NotEmpty
     private String name;
 
     @Column(name = "FLOOR" , nullable = false)

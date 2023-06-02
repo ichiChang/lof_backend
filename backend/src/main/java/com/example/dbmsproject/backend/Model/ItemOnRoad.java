@@ -1,6 +1,5 @@
 package com.example.dbmsproject.backend.Model;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -14,14 +13,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Entity
 @Table(name = "ITEM_ON_ROAD")
 public class ItemOnRoad {
     @Id
@@ -29,9 +30,11 @@ public class ItemOnRoad {
     private Long iid;
 
     @Column(name = "NAME", nullable = false)
+    @NotEmpty
     private String name;
     
     @Column(name = "TYPE", nullable = false)
+    @NotEmpty
     private String type;
 
     @Column(name = "PHOTO", nullable = true)
@@ -41,21 +44,25 @@ public class ItemOnRoad {
     private String remark;
 
     @Column(name = "PICK_UP_TIME", nullable = false)
-    private Date pick_up_time;
+    @NotEmpty
+    private String pick_up_time;
 
-    @Column(name = "POST_DATE", nullable = false, columnDefinition = "timestamp not null default current_timestamp")
-    @CreatedDate
-    private Date createTime;
+    @Column(name = "POST_TIME", nullable = false)
+    @NotNull
+    private String postTime;
     
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "USER_ID",nullable = false, referencedColumnName = "uid")
+    @NotNull
     private User user;
    
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "PICK_UP_PLACE_ID", nullable = false, referencedColumnName = "pid")
+    @NotNull
     private Place pickUpPlace;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "NOW_PLACE_ID", nullable = false, referencedColumnName = "pid")
+    @NotNull
     private Place nowPlace;
 }
