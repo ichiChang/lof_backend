@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import LostService from '../services/LostService';
+import CreateLostItem from './CreateLostItem';
 
 const LostComponent = () => {
   const [losts, setLosts] = useState([]);
 
   useEffect(() => {
     LostService.getLosts()
-      .then(response => {
-        setLosts(response.data);
+      .then(data => {
+        setLosts(data);
       })
       .catch(error => {
         console.error('Error fetching lost items:', error);
@@ -39,7 +40,7 @@ const LostComponent = () => {
 
   return (
     <div style={styles.container}>
-      <h1 style = {styles.heading}>Lost Items List</h1>
+      <h1 style={styles.heading}>Lost Items List</h1>
       <table className="table table-striped" style={styles.table}>
         <thead>
           <tr>
@@ -64,9 +65,9 @@ const LostComponent = () => {
           ))}
         </tbody>
       </table>
+      <CreateLostItem />
     </div>
   );
 }
 
 export default LostComponent;
-

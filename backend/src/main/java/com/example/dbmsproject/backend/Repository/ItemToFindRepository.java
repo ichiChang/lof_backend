@@ -7,7 +7,6 @@ import com.example.dbmsproject.backend.Model.Place;
 import com.example.dbmsproject.backend.Model.User;
 
 import java.util.Collection;
-import java.util.List;
 
 
 public interface ItemToFindRepository extends JpaRepository<ItemToFind,Long>{

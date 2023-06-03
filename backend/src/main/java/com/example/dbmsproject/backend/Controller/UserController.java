@@ -46,7 +46,7 @@ public class UserController {
      查詢全部
      */
     @GetMapping("/users")
-    public ResponseEntity users(){
+    public ResponseEntity<Collection<User>> users(){
         Collection<User> users = userService.getUsers();
         return ResponseEntity.ok().body(users);
     }
@@ -54,17 +54,21 @@ public class UserController {
      依id查詢
      */
     @GetMapping("/users/{id}")
-    public Optional<User> getUser(@PathVariable Long id){
-        Optional<User> user = userService.findById(id);
-        return user;
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
+    Optional<User> user = userService.findById(id);
+    if (user.isPresent()) {
+        return ResponseEntity.ok().body(user.get());
+    } else {
+        return ResponseEntity.notFound().build();
     }
+}
     
     //U
     /*
      更新使用者資料
      */
     @PutMapping("/users/{id}")
-    public ResponseEntity updateUser(@PathVariable Long id, @Valid @RequestBody User request){
+    public ResponseEntity<String> updateUser(@PathVariable Long id, @Valid @RequestBody User request){
         Boolean rlt = userService.updateUser(id, request);
         if(!rlt){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("錯誤");
@@ -76,7 +80,7 @@ public class UserController {
      依id刪除
      */
     @DeleteMapping("/users/{id}")
-    public ResponseEntity deleteUser(@PathVariable Long id){
+    public ResponseEntity<String> deleteUser(@PathVariable Long id){
         Boolean rlt = userService.deleteUser(id);
         if (!rlt) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Id 不存在");

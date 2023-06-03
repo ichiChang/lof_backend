@@ -1,7 +1,10 @@
 package com.example.dbmsproject.backend.Service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Optional;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,10 @@ public class ItemOnRoadServiceImpl implements ItemOnRoadService{
 
     @Override
     public ItemOnRoad saveItemOnRoad(ItemOnRoad itemOnRoad) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("Asia/Taipei"));
+        String date = df.format(new Date());
+        itemOnRoad.setPostTime(date);
         itemOnRoadRepository.save(itemOnRoad);
         return itemOnRoad;
     }

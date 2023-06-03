@@ -26,7 +26,7 @@ public class Place {
     @NotEmpty
     private String name;
 
-    @Column(name = "FLOOR" , nullable = false)
+    @Column(name = "FLOOR" , nullable = true)
     private String floor;
 
     @Column(name = "CLASSROOM" , nullable = true)

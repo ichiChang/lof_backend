@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +26,7 @@ public class Contact {
 
     @Column(name = "PHONE_NUM", nullable = false)
     @NotEmpty
+    @Size(max = 10,min = 10,message = "電話號碼長度錯誤")
     private String phone_number;
 
     @Column(name = "EMAIL", nullable = false)

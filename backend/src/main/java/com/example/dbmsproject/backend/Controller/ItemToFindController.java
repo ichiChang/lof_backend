@@ -30,7 +30,7 @@ public class ItemToFindController {
     //C
 
     @PostMapping("/itemtofinds")
-    public ResponseEntity createItemToFind(@Valid @RequestBody ItemToFind itemtofind){
+    public ResponseEntity<ItemToFind> createItemToFind(@Valid @RequestBody ItemToFind itemtofind){
         ItemToFind result = itemToFindService.saveItemToFind(itemtofind);
         return ResponseEntity.ok().body(result);
     }
@@ -41,10 +41,10 @@ public class ItemToFindController {
      */
 
     @GetMapping("/itemtofinds")
-    public Collection<ItemToFind> itemToFinds(){
-       return itemToFindService.getItemToFinds();
+    public ResponseEntity<Collection<ItemToFind>> itemToFinds(){
+       Collection<ItemToFind> result = itemToFindService.getItemToFinds();
+       return ResponseEntity.ok().body(result);
     }
-
      /*
       依id查詢
      */
@@ -60,8 +60,9 @@ public class ItemToFindController {
      */
     
     @GetMapping("/itemtofinds/user")
-    public Collection<ItemToFind> getItemToFindsByUser(@RequestBody User user){
-        return itemToFindService.findByUser(user);
+    public ResponseEntity<Collection<ItemToFind>> getItemToFindsByUser(@RequestBody User user){
+        Collection<ItemToFind> result = itemToFindService.findByUser(user);
+        return ResponseEntity.ok().body(result);
     }
 
 }

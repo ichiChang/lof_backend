@@ -32,7 +32,7 @@ public class ItemOnRoadController {
     //C
 
     @PostMapping("/itemonroads")
-    public ResponseEntity createItemOnRoad(@Valid @RequestBody ItemOnRoad itemOnRoad){
+    public ResponseEntity<ItemOnRoad> createItemOnRoad(@Valid @RequestBody ItemOnRoad itemOnRoad){
         ItemOnRoad result = itemOnRoadService.saveItemOnRoad(itemOnRoad);
         return ResponseEntity.ok().body(result);
     }
@@ -66,7 +66,7 @@ public class ItemOnRoadController {
     //U
 
     @PutMapping("/itemonroads/{id}")
-    public ResponseEntity updateItemOnRoad(@PathVariable Long id, @Valid @RequestBody ItemOnRoad request){
+    public ResponseEntity<String> updateItemOnRoad(@PathVariable Long id, @Valid @RequestBody ItemOnRoad request){
         boolean rlt = itemOnRoadService.updateItemOnRoad(id, request);
         if(!rlt){
             return ResponseEntity.badRequest().body("錯誤");
@@ -77,7 +77,7 @@ public class ItemOnRoadController {
     //D
 
     @DeleteMapping("/itemonroads/{id}")
-    public ResponseEntity deleteItem(@PathVariable Long id) {
+    public ResponseEntity<String> deleteItem(@PathVariable Long id) {
         Boolean rlt = itemOnRoadService.deleteItemOnRoad(id);
         if (!rlt) {
             return ResponseEntity.badRequest().body("Id 不存在");

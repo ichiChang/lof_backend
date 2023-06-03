@@ -1,8 +1,5 @@
 package com.example.dbmsproject.backend.Model;
 
-import java.util.Date;
-
-import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
