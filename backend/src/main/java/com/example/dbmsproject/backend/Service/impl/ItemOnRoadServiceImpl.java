@@ -59,5 +59,17 @@ public class ItemOnRoadServiceImpl implements ItemOnRoadService{
         itemOnRoadRepository.deleteById(id);
         return true;
     }
+
+    @Override
+    public Collection<ItemOnRoad> findByType(String type) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findByType'");
+    }
+
+    @Override
+    public Collection<ItemOnRoad> findByName(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findByName'");
+    }
     
 }
