@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import UserService from '../services/UserService';
-
 const UserComponent = () => {
   const [users, setUsers] = useState([]);
 

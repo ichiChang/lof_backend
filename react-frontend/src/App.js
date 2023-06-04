@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import MyNavbar from './components/MyNavBar';
 import LostComponent from './components/LostComponent';
 import FoundComponent from './components/FoundComponent';
 import WelcomePage from './components/WelcomePage';
@@ -10,7 +9,6 @@ const App = () => {
   return (
     <div style={{ backgroundColor: '#FFFFF0' }}>
       <Router>
-        <MyNavbar />
         <Routes>
           <Route path="" element={<WelcomePage />} />
           <Route path="/lost" element={<LostComponent />} />
