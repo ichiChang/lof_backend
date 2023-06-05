@@ -1,14 +1,30 @@
 /* eslint-disable react/style-prop-object */
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
+import { Button, Modal, Toast } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from 'react-datepicker';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+
 
 const CreateLostItem = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [showToast, setShowToast] = useState(false); // State to control the visibility of the toast
+  const toastRef = useRef(null); // Reference to the Bootstrap toast
+  
+
+  const handleClose = () => setShowModal(false);
+  const handleShow = () => setShowModal(true);
+
+
   const [itemName, setItemName] = useState('');
   const [itemType, setItemType] = useState('');
   const [itemPhoto, setItemPhoto] = useState('');
   const [itemRemark, setItemRemark] = useState('');
-  const [pickUpTime, setPickUpTime] = useState('');
-  const [postTime, setPostTime] = useState('');
+  const [pickUpTime, setPickUpTime] = useState(null);
   const [userName, setUserName] = useState('');
   const [userPhone, setUserPhone] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -21,6 +37,28 @@ const CreateLostItem = () => {
   const [nowPlaceFloor, setNowPlaceFloor] = useState('');
   const [nowPlaceClassroom, setNowPlaceClassroom] = useState('');
 
+
+
+  const handlePickUpTimeChange = (date) => {
+    setPickUpTime(date);
+  };
+  const CustomDatePickerInput = ({ value, onClick }) => (
+    <div className="input-group">
+      <input
+        type="text"
+        className="form-control"
+        value={value}
+        onClick={onClick}
+        readOnly
+      />
+      <div className="input-group-append">
+        <button className="btn btn-outline-secondary" type="button" onClick={onClick}>
+          <FontAwesomeIcon icon={faCalendarAlt} />
+        </button>
+      </div>
+    </div>
+  );
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -31,7 +69,7 @@ const CreateLostItem = () => {
       photo: itemPhoto,
       remark: itemRemark,
       pick_up_time: pickUpTime,
-      postTime: postTime,
+      postTime: "postTime",
       user: {
         uid: 0,
         name: userName,
@@ -61,13 +99,16 @@ const CreateLostItem = () => {
     try {
       const response = await axios.post('http://localhost:8080/api/itemonroads', itemData);
       console.log('Item created:', response.data);
+
+      // Show the Bootstrap toast
+      setShowToast(true);
+
       // 清空表单
       setItemName('');
       setItemType('');
       setItemPhoto('');
       setItemRemark('');
       setPickUpTime('');
-      setPostTime('');
       setUserName('');
       setUserPhone('');
       setUserEmail('');
@@ -83,234 +124,259 @@ const CreateLostItem = () => {
       console.error('Error creating item:', error);
     }
   };
+  const handleToastClose = () => {
+    setShowToast(false);
+  };
+  const handleSubmitAndClose = (e) => {
+    handleSubmit(e);
+    handleClose();
+  };
+  // Rest of your component code...
 
   return (
     <div>
-      <h2>Create Lost Item</h2>
-      <form onSubmit={handleSubmit}>
-        <table>
-          <tbody>
-            <tr>
-              <td>
-                <label>Name:</label>
-              </td>
-              <td>
+      <Button variant="primary" onClick={handleShow}>
+        新增物品
+      </Button>
+
+      <Modal show={showModal} onHide={handleClose} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Create Lost Item</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={handleSubmit}>
+          <div class="container">
+        <form>
+          <div class="row">
+            <div class="col">
+              <div class="input-group">
+                <div class="preview-container">
+                  {itemPhoto && <img src={itemPhoto} alt="Preview" class="img-thumbnail" />}
+                </div>
                 <input
-                  type="text"
-                  value={itemName}
-                  onChange={(e) => setItemName(e.target.value)}
+                  type="file"
+                  class="form-control"
+                  id="itemPhoto"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    const path = URL.createObjectURL(file);
+                    setItemPhoto(path);
+                  }}
                 />
-              </td>
-              <td>
-                <label>Type:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={itemType}
-                  onChange={(e) => setItemType(e.target.value)}
-                />
-              </td>
-              <td>
-                <label>Photo:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={itemPhoto}
-                  onChange={(e) => setItemPhoto(e.target.value)}
-                />
-              </td>
-            </tr>
-              
+                <label class="input-group-text" for="itemPhoto">
+                  <FontAwesomeIcon icon={faUpload} />
+                </label>
+              </div>
+
+            </div>
+            <div class="col">
+              <label htmlFor="itemName" style={{ fontFamily: 'Oswald, sans-serif' }}>Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="itemName"
+                value={itemName}
+                onChange={(e) => setItemName(e.target.value)}
+              />
+            </div>
+            <div class="col">
+              <label htmlFor="itemType" style={{ fontFamily: 'Oswald, sans-serif' }}>Type</label>
+              <select
+                class="form-select"
+                id="itemType"
+                value={itemType}
+                onChange={(e) => setItemType(e.target.value)}
+              >
+                <option value="Document">Document</option>
+                <option value="Clothes">Clothes</option>
+                <option value="Accessories">Accessories</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
             
-            <tr>
-              <td>
-                <label>Remark:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={itemRemark}
-                  onChange={(e) => setItemRemark(e.target.value)}
-                />
-              </td>
-              
-              <td>
-                <label>Pick Up Time:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={pickUpTime}
-                  onChange={(e) => setPickUpTime(e.target.value)}
-                />
-              </td>
-              <td>
-                <label>Post Time:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={postTime}
-                  onChange={(e) => setPostTime(e.target.value)}
-                />
-              </td>
-            </tr>
-            <tr>
-            {/* 在每个<tr>之间添加空白行 */}
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            </tr>
-            <tr>
-              <td>
-                <label>User Name:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
-                />
-              </td>
-              <td>
-                <label>User Phone:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={userPhone}
-                  onChange={(e) => setUserPhone(e.target.value)}
-                />
-              </td>
-              <td>
-                <label>User Email:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={userEmail}
-                  onChange={(e) => setUserEmail(e.target.value)}
-                />
-              </td>
-              
-            </tr>
-            <tr>
-              <td>
-                <label>User Line ID:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={userLineId}
-                  onChange={(e) => setUserLineId(e.target.value)}
-                />
-              </td>
-              
-              <td>
-                <label>User Facebook URL:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={userFbUrl}
-                  onChange={(e) => setUserFbUrl(e.target.value)}
-                />
-              </td>
-              
-            </tr>
-            <tr>
-                {/* 在每个<tr>之间添加空白行 */}
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-              <td>
-                <label>Pick Up Place Name:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={pickUpPlaceName}
-                  onChange={(e) => setPickUpPlaceName(e.target.value)}
-                />
-              </td>
-              <td>
-                <label>Pick Up Place Floor:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={pickUpPlaceFloor}
-                  onChange={(e) => setPickUpPlaceFloor(e.target.value)}
-                />
-              </td>
-              <td>
-                <label>Pick Up Place Classroom:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={pickUpPlaceClassroom}
-                  onChange={(e) => setPickUpPlaceClassroom(e.target.value)}
-                />
-              </td>
-            </tr>
-            <tr>
-                {/* 在每个<tr>之间添加空白行 */}
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-              <td>
-                <label>Now Place Name:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={nowPlaceName}
-                  onChange={(e) => setNowPlaceName(e.target.value)}
-                />
-              </td>
-              <td>
-                <label>Now Place Floor:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={nowPlaceFloor}
-                  onChange={(e) => setNowPlaceFloor(e.target.value)}
-                />
-              </td>
-              <td>
-                <label>Now Place Classroom:</label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={nowPlaceClassroom}
-                  onChange={(e) => setNowPlaceClassroom(e.target.value)}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <button type="submit">Create</button>
-      </form>
+
+
+
+          </div>
+          <div class="row mt-3">
+            <div class="col">
+              <label htmlFor="itemRemark" style={{ fontFamily: 'Oswald, sans-serif' }}>Remark</label>
+              <input
+                type="text"
+                class="form-control"
+                id="itemRemark"
+                value={itemRemark}
+                onChange={(e) => setItemRemark(e.target.value)}
+              />
+            </div>
+            <div className="col" style={{ fontFamily: 'Oswald, sans-serif' }}>
+              <label htmlFor="pickUpTime">Pick Up Time</label>
+              <DatePicker
+                id="pickUpTime"
+                selected={pickUpTime}
+                onChange={handlePickUpTimeChange}
+                dateFormat="yyyy-MM-dd"
+                customInput={<CustomDatePickerInput />}
+              />
+            </div>
+            
+          </div>
+
+          <div class="row mt-3">
+            <div class="col">
+              <label htmlFor="userName" style={{ fontFamily: 'Oswald, sans-serif' }}>User Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="userName"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+              />
+            </div>
+            <div class="col">
+              <label htmlFor="userPhone" style={{ fontFamily: 'Oswald, sans-serif' }}>User Phone</label>
+              <input
+                type="text"
+                class="form-control"
+                id="userPhone"
+                value={userPhone}
+                onChange={(e) => setUserPhone(e.target.value)}
+              />
+            </div>
+            <div class="col">
+              <label htmlFor="userEmail" style={{ fontFamily: 'Oswald, sans-serif' }}>User Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="userEmail"
+                placeholder="name@example.com"
+                value={userEmail}
+                onChange={(e) => setUserEmail(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col">
+              <label htmlFor="userLineId" style={{ fontFamily: 'Oswald, sans-serif' }}>User Line ID</label>
+              <input
+                type="text"
+                class="form-control"
+                id="userLineId"
+                value={userLineId}
+                onChange={(e) => setUserLineId(e.target.value)}
+              />
+            </div>
+            <div class="col">
+              <label htmlFor="userFbUrl" style={{ fontFamily: 'Oswald, sans-serif' }}>User Facebook URL</label>
+              <input
+                type="text"
+                class="form-control"
+                id="userFbUrl"
+                value={userFbUrl}
+                onChange={(e) => setUserFbUrl(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col">
+              <label htmlFor="pickUpPlaceName" style={{ fontFamily: 'Oswald, sans-serif' }}>Pick Up Place</label>
+              <input
+                type="text"
+                class="form-control"
+                id="pickUpPlaceName"
+                value={pickUpPlaceName}
+                onChange={(e) => setPickUpPlaceName(e.target.value)}
+              />
+            </div>
+            <div class="col">
+              <label htmlFor="pickUpPlaceFloor" style={{ fontFamily: 'Oswald, sans-serif' }}>Pick Up Place Floor</label>
+              <input
+                type="text"
+                class="form-control"
+                id="pickUpPlaceFloor"
+                value={pickUpPlaceFloor}
+                onChange={(e) => setPickUpPlaceFloor(e.target.value)}
+              />
+            </div>
+            <div class="col">
+              <label htmlFor="pickUpPlaceClassroom" style={{ fontFamily: 'Oswald, sans-serif' }}>Pick Up Place Classroom</label>
+              <input
+                type="text"
+                class="form-control"
+                id="pickUpPlaceClassroom"
+                value={pickUpPlaceClassroom}
+                onChange={(e) => setPickUpPlaceClassroom(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col">
+              <label htmlFor="nowPlaceName" style={{ fontFamily: 'Oswald, sans-serif' }}>Now Place</label>
+              <input
+                type="text"
+                class="form-control"
+                id="nowPlaceName"
+                value={nowPlaceName}
+                onChange={(e) => setNowPlaceName(e.target.value)}
+              />
+            </div>
+            <div class="col">
+              <label htmlFor="nowPlaceFloor" style={{ fontFamily: 'Oswald, sans-serif' }}>Now Place Floor</label>
+              <input
+                type="text"
+                class="form-control"
+                id="nowPlaceFloor"
+                value={nowPlaceFloor}
+                onChange={(e) => setNowPlaceFloor(e.target.value)}
+              />
+            </div>
+            <div class="col">
+              <label htmlFor="nowPlaceClassroom" style={{ fontFamily: 'Oswald, sans-serif' }}>Now Place Classroom</label>
+              <input
+                type="text"
+                class="form-control"
+                id="nowPlaceClassroom"
+                value={nowPlaceClassroom}
+                onChange={(e) => setNowPlaceClassroom(e.target.value)}
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSubmitAndClose}>
+            Create
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Toast
+        show={showToast}
+        onClose={handleToastClose}
+        ref={toastRef}
+        delay={3000}
+        autohide
+        style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          minWidth: '200px',
+        }}
+      >
+        <Toast.Header>
+          <strong className="me-auto">Success!</strong>
+        </Toast.Header>
+        <Toast.Body>Item posted successfully!</Toast.Body>
+      </Toast>
     </div>
   );
 };
-
 export default CreateLostItem;
