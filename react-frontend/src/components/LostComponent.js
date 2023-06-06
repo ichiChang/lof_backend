@@ -1,59 +1,72 @@
-import React, { useEffect, useState } from 'react';
-import LostService from '../services/LostService';
-import CreateLostItem from './CreateLostItem';
-import MyNavbar from './MyNavBar';
+import React, { useEffect, useState } from "react";
+import LostService from "../services/LostService";
+import CreateLostItem from "./CreateLostItem";
+import MyNavbar from "./MyNavBar";
 
 const LostComponent = () => {
   const [losts, setLosts] = useState([]);
 
   useEffect(() => {
     LostService.getLosts()
-      .then(data => {
+      .then((data) => {
         setLosts(data);
       })
-      .catch(error => {
-        console.error('Error fetching lost items:', error);
+      .catch((error) => {
+        console.error("Error fetching lost items:", error);
       });
   }, []);
 
   const styles = {
     container: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      minHeight: '100vh', // Changed height to minHeight
-      backgroundColor: '#FFFFF0',
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "flex-start",
+      minHeight: "100vh", // Changed height to minHeight
+      backgroundColor: "#FFFFF0",
     },
     cardContainer: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'center',
-      marginTop: '20px',
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      marginTop: "20px",
     },
     card: {
-      width: '25rem',
-      height: '30rem',
-      margin: '10px',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
+      width: "25rem",
+      height: "30rem",
+      margin: "10px",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
     },
     cardImage: {
-      height: '60%',
-      objectFit: 'contain',
+      height: "60%",
+      objectFit: "contain",
     },
     cardBody: {
-      padding: '10px',
-      height: '40%',
+      padding: "10px",
+      height: "40%",
     },
     heading: {
-      fontFamily: 'Helvetica Neue, Arial, sans-serif',
-      fontWeight: 'bold',
-      fontSize: '50px',
-      color: '#333',
-      marginTop: '20px',
-      marginBottom: '10px',
+      fontFamily: "Helvetica Neue, Arial, sans-serif",
+      fontWeight: "bold",
+      fontSize: "50px",
+      color: "#333",
+      marginTop: "20px",
+      marginBottom: "10px",
+    },
+    searchBarContainer: {
+      display: "flex",
+      alignItems: "center",
+      marginTop: "10px",
+    },
+    searchInput: {
+      borderRadius: "30px",
+      padding: "10px",
+      width: "500px",
+      marginRight: "10px",
+      border: "none",
+      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
     },
   };
 
@@ -62,17 +75,38 @@ const LostComponent = () => {
       <MyNavbar />
       <div style={styles.container}>
         <h1 style={styles.heading}>Lost Items List</h1>
+
+        <div style={styles.searchBarContainer}>
+          <input type="text" style={styles.searchInput} placeholder="Search" />
+        </div>
+
         <div style={styles.cardContainer}>
-          {losts.map(lost => (
+          {losts.map((lost) => (
             <div key={lost.iid} className="card" style={styles.card}>
               {lost.photo && (
-                <img src={lost.photo} className="card-img-top" alt={lost.name} style={styles.cardImage} />
+                <img
+                  src={lost.photo}
+                  className="card-img-top"
+                  alt={lost.name}
+                  style={styles.cardImage}
+                />
               )}
               <div className="card-body text-center" style={styles.cardBody}>
-                <h5 className="card-title" style={{ fontSize: '30px', fontWeight: 'bold' }}>{lost.name}</h5>
-                <p className="card-text" style={{ fontFamily: 'Microsoft YaHei' }}>
-                  {lost.type}<br />
-                  {lost.pickUpPlace.name} {lost.pickUpPlace.floor}樓{lost.pickUpPlace.classroom}<br />
+                <h5
+                  className="card-title"
+                  style={{ fontSize: "30px", fontWeight: "bold" }}
+                >
+                  {lost.name}
+                </h5>
+                <p
+                  className="card-text"
+                  style={{ fontFamily: "Microsoft YaHei" }}
+                >
+                  {lost.type}
+                  <br />
+                  {lost.pickUpPlace.name} {lost.pickUpPlace.floor}樓
+                  {lost.pickUpPlace.classroom}
+                  <br />
                   {lost.pick_up_time}
                 </p>
               </div>
@@ -83,6 +117,6 @@ const LostComponent = () => {
       </div>
     </div>
   );
-}
+};
 
 export default LostComponent;

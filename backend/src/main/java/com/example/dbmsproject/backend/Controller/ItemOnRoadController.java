@@ -21,62 +21,73 @@ import jakarta.validation.Valid;
 
 import com.example.dbmsproject.backend.Model.ItemOnRoad;
 import com.example.dbmsproject.backend.Model.User;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/itemonroads")
 @CrossOrigin(origins = "http://localhost:3000")
 public class ItemOnRoadController {
-    
+
     @Autowired
     private ItemOnRoadService itemOnRoadService;
-    
-    //C
 
-    @PostMapping("/itemonroads")
-    public ResponseEntity<ItemOnRoad> createItemOnRoad(@Valid @RequestBody ItemOnRoad itemOnRoad){
+    // C
+
+    @PostMapping("")
+    public ResponseEntity<ItemOnRoad> createItemOnRoad(@Valid @RequestBody ItemOnRoad itemOnRoad) {
         ItemOnRoad result = itemOnRoadService.saveItemOnRoad(itemOnRoad);
         return ResponseEntity.ok().body(result);
     }
-    //R
+    // R
     /*
-      查詢全部
+     * 查詢全部
      */
 
-    @GetMapping("/itemonroads")
-    public Collection<ItemOnRoad> itemonroads(){
+    @GetMapping("")
+    public Collection<ItemOnRoad> itemonroads() {
         return itemOnRoadService.getItemOnRoads();
     }
     /*
-      依id查詢
+     * 依id查詢
      */
 
-    @GetMapping("/itemonroads/{id}")
-    public Optional<ItemOnRoad> getItemOnRoad(@PathVariable Long id){
+    @GetMapping("/id/{id}")
+    public Optional<ItemOnRoad> getItemOnRoadById(@PathVariable Long id) {
         Optional<ItemOnRoad> item = itemOnRoadService.findById(id);
         return item;
     }
     /*
-      依使用者查詢
+     * 依使用者查詢
      */
 
-    @GetMapping("/itemonroads/user")
+    @GetMapping("/user")
     public Collection<ItemOnRoad> getItemOnRoadsByUser(@RequestBody User user) {
-    return itemOnRoadService.findByUser(user);
+        return itemOnRoadService.findByUser(user);
     }
 
-    //U
+    /*
+     * 依name查詢
+     */
 
-    @PutMapping("/itemonroads/{id}")
-    public ResponseEntity<String> updateItemOnRoad(@PathVariable Long id, @Valid @RequestBody ItemOnRoad request){
+    @GetMapping("/{name}")
+    public Collection<ItemOnRoad> getItemOnRoadByName(@PathVariable String name) {
+        Collection<ItemOnRoad> item = itemOnRoadService.findByName(name);
+        return item;
+    }
+
+    // U
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateItemOnRoad(@PathVariable Long id, @Valid @RequestBody ItemOnRoad request) {
         boolean rlt = itemOnRoadService.updateItemOnRoad(id, request);
-        if(!rlt){
+        if (!rlt) {
             return ResponseEntity.badRequest().body("錯誤");
         }
         return ResponseEntity.ok().body("成功更新物品");
     }
 
-    //D
+    // D
 
-    @DeleteMapping("/itemonroads/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteItem(@PathVariable Long id) {
         Boolean rlt = itemOnRoadService.deleteItemOnRoad(id);
         if (!rlt) {

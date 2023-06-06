@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import UserService from '../services/UserService';
+import React, { useEffect, useState } from "react";
+import UserService from "../services/UserService";
 const UserComponent = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     UserService.getUsers()
-      .then(response => {
+      .then((response) => {
         setUsers(response.data);
       })
-      .catch(error => {
-        console.error('Error fetching users:', error);
+      .catch((error) => {
+        console.error("Error fetching users:", error);
       });
   }, []);
-  
+
   return (
     <div>
       <h1 className="text-center">Users List</h1>
@@ -28,7 +28,7 @@ const UserComponent = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
+          {users.map((user) => (
             <tr key={user.uid}>
               <td>{user.uid}</td>
               <td>{user.name}</td>
@@ -42,6 +42,6 @@ const UserComponent = () => {
       </table>
     </div>
   );
-}
+};
 
 export default UserComponent;

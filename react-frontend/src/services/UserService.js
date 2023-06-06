@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 
-const BASE_URL = 'http://localhost:8080/api';
+const BASE_URL = "http://localhost:8080/api";
 
 class UserService {
   getUsers() {
@@ -29,4 +29,5 @@ class UserService {
   }
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default new UserService();
