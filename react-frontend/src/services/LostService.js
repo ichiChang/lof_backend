@@ -13,6 +13,17 @@ class LostService {
     }
   }
 
+  async searchLostItems(searchTerm) {
+    try {
+      const response = await axios.get(`${LOST_REST_API_URL}/name/${searchTerm}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error searching lost items:", error);
+      throw error;
+    }
+  }
+  
+
   async createLost(lostItem) {
     try {
       const response = await axios.post(LOST_REST_API_URL, lostItem, {

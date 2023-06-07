@@ -68,7 +68,7 @@ public class ItemOnRoadController {
      * 依name查詢
      */
 
-    @GetMapping("/{name}")
+    @GetMapping("/name/{name}")
     public Collection<ItemOnRoad> getItemOnRoadByName(@PathVariable String name) {
         Collection<ItemOnRoad> item = itemOnRoadService.findByName(name);
         return item;

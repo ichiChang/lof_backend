@@ -5,8 +5,13 @@ import MyNavbar from "./MyNavBar";
 
 const LostComponent = () => {
   const [losts, setLosts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    fetchLostItems();
+  }, []);
+
+  const fetchLostItems = () => {
     LostService.getLosts()
       .then((data) => {
         setLosts(data);
@@ -14,8 +19,23 @@ const LostComponent = () => {
       .catch((error) => {
         console.error("Error fetching lost items:", error);
       });
-  }, []);
+  };
 
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+    if (event.target.value.trim() === "") {
+      fetchLostItems(); // Fetch all items when search bar is empty
+    } else {
+      LostService.searchLostItems(event.target.value.trim())
+        .then((data) => {
+          setLosts(data);
+        })
+        .catch((error) => {
+          console.error("Error searching lost items:", error);
+        });
+    }
+  };
+  
   const styles = {
     container: {
       display: "flex",
@@ -77,7 +97,13 @@ const LostComponent = () => {
         <h1 style={styles.heading}>Lost Items List</h1>
 
         <div style={styles.searchBarContainer}>
-          <input type="text" style={styles.searchInput} placeholder="Search" />
+          <input
+            type="text"
+            style={styles.searchInput}
+            placeholder="Search"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
         </div>
 
         <div style={styles.cardContainer}>

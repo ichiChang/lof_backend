@@ -21,7 +21,7 @@ const CreateLostItem = () => {
   const [itemType, setItemType] = useState("");
   const [itemPhoto, setItemPhoto] = useState("");
   const [itemRemark, setItemRemark] = useState("");
-  const [pickUpTime, setPickUpTime] = useState(null);
+  const [pickUpTime, setPickUpTime] = useState('');
   const [userName, setUserName] = useState("");
   const [userPhone, setUserPhone] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -35,8 +35,11 @@ const CreateLostItem = () => {
   const [nowPlaceClassroom, setNowPlaceClassroom] = useState("");
 
   const handlePickUpTimeChange = (date) => {
-    setPickUpTime(date);
+    const formattedDate = date.toLocaleDateString('en-CA'); // Format the date as "yyyy-mm-dd"
+    setPickUpTime(formattedDate);
+    console.log(formattedDate);
   };
+  
   const CustomDatePickerInput = ({ value, onClick }) => (
     <div className="input-group">
       <input
@@ -228,19 +231,18 @@ const CreateLostItem = () => {
                       onChange={(e) => setItemRemark(e.target.value)}
                     />
                   </div>
-                  <div
-                    className="col"
-                    style={{ fontFamily: "Oswald, sans-serif" }}
-                  >
+                  <div className="col" style={{ fontFamily: "Oswald, sans-serif" }}>
                     <label htmlFor="pickUpTime">Pick Up Time</label>
                     <DatePicker
                       id="pickUpTime"
                       selected={pickUpTime}
                       onChange={handlePickUpTimeChange}
                       dateFormat="yyyy-MM-dd"
+                      showTimeSelect={false} // 设置showTimeSelect属性为false
                       customInput={<CustomDatePickerInput />}
                     />
                   </div>
+
                 </div>
 
                 <div class="row mt-3">
