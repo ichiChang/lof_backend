@@ -1,19 +1,40 @@
 import React, { useEffect, useState } from "react";
 import FoundService from "../services/FoundService";
 import MyNavbar from "./MyNavBar";
+import CreateFoundItem from "./CreateFounditem";
 
 const FoundComponent = () => {
-  const [Founds, setFounds] = useState([]);
+  const [founds, setFounds] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    fetchFoundItems();
+  }, []);
+
+  const fetchFoundItems = () => {
     FoundService.getFounds()
-      .then((response) => {
-        setFounds(response.data);
+      .then((data) => {
+        setFounds(data);
       })
       .catch((error) => {
         console.error("Error fetching found items:", error);
       });
-  }, []);
+  };
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+    if (event.target.value.trim() === "") {
+      fetchFoundItems(); // Fetch all items when search bar is empty
+    } else {
+      FoundService.searchFoundItems(event.target.value.trim())
+        .then((data) => {
+          setFounds(data);
+        })
+        .catch((error) => {
+          console.error("Error searching found items:", error);
+        });
+    }
+  };
 
   const styles = {
     container: {
@@ -21,12 +42,30 @@ const FoundComponent = () => {
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "flex-start",
-      height: "100vh",
+      minHeight: "100vh", // Changed height to minHeight
       backgroundColor: "#FFFFF0",
     },
-    table: {
+    cardContainer: {
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "center",
       marginTop: "20px",
-      width: "80%",
+    },
+    card: {
+      width: "25rem",
+      height: "30rem",
+      margin: "10px",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+    },
+    cardImage: {
+      height: "60%",
+      objectFit: "contain",
+    },
+    cardBody: {
+      padding: "10px",
+      height: "40%",
     },
     heading: {
       fontFamily: "Helvetica Neue, Arial, sans-serif",
@@ -36,6 +75,19 @@ const FoundComponent = () => {
       marginTop: "20px",
       marginBottom: "10px",
     },
+    searchBarContainer: {
+      display: "flex",
+      alignItems: "center",
+      marginTop: "10px",
+    },
+    searchInput: {
+      borderRadius: "30px",
+      padding: "10px",
+      width: "500px",
+      marginRight: "10px",
+      border: "none",
+      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    },
   };
 
   return (
@@ -43,33 +95,51 @@ const FoundComponent = () => {
       <MyNavbar />
       <div style={styles.container}>
         <h1 style={styles.heading}>Found Items List</h1>
-        <table className="table table-striped" style={styles.table}>
-          <thead>
-            <tr>
-              <th>Item Id</th>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Remark</th>
-              <th>Last Seen Place</th>
-              <th>Last Seen Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Founds.map((found) => (
-              <tr key={found.iid}>
-                <td>{found.iid}</td>
-                <td>{found.name}</td>
-                <td>{found.type}</td>
-                <td>{found.remark}</td>
-                <td>
-                  {found.lastSeenPlace.name}
-                  {found.lastSeenPlace.floor}樓{found.lastSeenPlace.classroom}
-                </td>
-                <td>{found.lastSeenTime}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+        <div style={styles.searchBarContainer}>
+          <input
+            type="text"
+            style={styles.searchInput}
+            placeholder="Search"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+        </div>
+
+        <div style={styles.cardContainer}>
+          {founds.map((found) => (
+            <div key={found.iid} className="card" style={styles.card}>
+              {found.photo && (
+                <img
+                  src={found.photo}
+                  className="card-img-top"
+                  alt={found.name}
+                  style={styles.cardImage}
+                />
+              )}
+              <div className="card-body text-center" style={styles.cardBody}>
+                <h5
+                  className="card-title"
+                  style={{ fontSize: "30px", fontWeight: "bold" }}
+                >
+                  {found.name}
+                </h5>
+                <p
+                  className="card-text"
+                  style={{ fontFamily: "Microsoft YaHei" }}
+                >
+                  {found.type}
+                  <br />
+                  {found.lastSeenPlace.name} {found.lastSeenPlace.floor}{" "}
+                  {found.lastSeenPlace.classroom}
+                  <br />
+                  {found.lastSeenTime}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <CreateFoundItem />
       </div>
     </div>
   );

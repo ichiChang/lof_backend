@@ -11,6 +11,7 @@ import Start from "../images/start.svg";
 import Star from "../images/star.svg";
 import Arrow from "../images/8.svg";
 import MyNavbar from "./MyNavBar";
+import { Link } from "react-router-dom";
 
 const WelcomePage = () => {
   return (
@@ -110,6 +111,35 @@ const WelcomePage = () => {
             height: "300px",
           }}
         />
+
+        <div
+          style={{
+            backgroundImage: `url(${LeftBottom})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            backgroundSize: "300px 300px",
+            position: "absolute",
+            bottom: "0",
+            left: "10px",
+            width: "150px",
+            height: "120px",
+          }}
+        />
+      </div>
+      <div
+        style={{
+          backgroundImage: `url(${Found})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "50% 50%",
+          backgroundSize: "500px 450px",
+          position: "absolute",
+          top: "45%",
+          right: "30%",
+          width: "1000px",
+          height: "300px",
+        }}
+      />
+      <Link to="/second">
         <div
           style={{
             backgroundImage: `url(${Start})`,
@@ -121,6 +151,7 @@ const WelcomePage = () => {
             right: "20%",
             width: "500px",
             height: "400px",
+            cursor: "pointer",
           }}
         />
         <div
@@ -151,33 +182,7 @@ const WelcomePage = () => {
             transform: "rotate(-20deg)",
           }}
         />
-        <div
-          style={{
-            backgroundImage: `url(${LeftBottom})`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            backgroundSize: "300px 300px",
-            position: "absolute",
-            bottom: "0",
-            left: "10px",
-            width: "150px",
-            height: "120px",
-          }}
-        />
-      </div>
-      <div
-        style={{
-          backgroundImage: `url(${Found})`,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "50% 50%",
-          backgroundSize: "500px 450px",
-          position: "absolute",
-          top: "45%",
-          right: "30%",
-          width: "1000px",
-          height: "300px",
-        }}
-      />
+      </Link>
     </div>
   );
 };

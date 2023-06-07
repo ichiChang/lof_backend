@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
 
 const LOST_REST_API_URL = "http://localhost:8080/api/itemonroads";
@@ -15,14 +16,15 @@ class LostService {
 
   async searchLostItems(searchTerm) {
     try {
-      const response = await axios.get(`${LOST_REST_API_URL}/name/${searchTerm}`);
+      const response = await axios.get(
+        `${LOST_REST_API_URL}/name/${searchTerm}`
+      );
       return response.data;
     } catch (error) {
       console.error("Error searching lost items:", error);
       throw error;
     }
   }
-  
 
   async createLost(lostItem) {
     try {
@@ -38,5 +40,4 @@ class LostService {
     }
   }
 }
-
 export default new LostService();

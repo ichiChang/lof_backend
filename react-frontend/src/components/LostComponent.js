@@ -35,7 +35,7 @@ const LostComponent = () => {
         });
     }
   };
-  
+
   const styles = {
     container: {
       display: "flex",
@@ -130,7 +130,7 @@ const LostComponent = () => {
                 >
                   {lost.type}
                   <br />
-                  {lost.pickUpPlace.name} {lost.pickUpPlace.floor}樓
+                  {lost.pickUpPlace.name} {lost.pickUpPlace.floor}{" "}
                   {lost.pickUpPlace.classroom}
                   <br />
                   {lost.pick_up_time}

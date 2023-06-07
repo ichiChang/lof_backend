@@ -1,6 +1,5 @@
 package com.example.dbmsproject.backend.Model;
 
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
@@ -29,11 +29,12 @@ public class ItemToFind {
     @Column(name = "NAME", nullable = false)
     @NotEmpty
     private String name;
-    
+
     @Column(name = "TYPE", nullable = false)
     @NotEmpty
     private String type;
 
+    @Lob
     @Column(name = "PHOTO", nullable = true)
     private String photo;
 
@@ -44,11 +45,11 @@ public class ItemToFind {
     @NonNull
     private String postTime;
 
-    @Column(name = "LAST_SEEN_TIME",nullable = true)
+    @Column(name = "LAST_SEEN_TIME", nullable = true)
     private String lastSeenTime;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "USER_ID",nullable = false, referencedColumnName = "uid")
+    @JoinColumn(name = "USER_ID", nullable = false, referencedColumnName = "uid")
     @NonNull
     private User user;
 
@@ -56,5 +57,4 @@ public class ItemToFind {
     @JoinColumn(name = "LAST_SEEN_PLACE_ID", nullable = true, referencedColumnName = "pid")
     private Place lastSeenPlace;
 
-    
 }

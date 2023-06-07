@@ -1,4 +1,3 @@
-/* eslint-disable react/style-prop-object */
 import React, { useState, useRef } from "react";
 import axios from "axios";
 import { Button, Modal, Toast } from "react-bootstrap";
@@ -9,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 
-const CreateLostItem = () => {
+const CreateFoundItem = () => {
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false); // State to control the visibility of the toast
   const toastRef = useRef(null); // Reference to the Bootstrap toast
@@ -21,21 +20,17 @@ const CreateLostItem = () => {
   const [itemType, setItemType] = useState("Document");
   const [itemPhoto, setItemPhoto] = useState("");
   const [itemRemark, setItemRemark] = useState("");
-  const [pickUpTime, setPickUpTime] = useState(null);
+  const [itemLastSeenTime, setItemLastSeenTime] = useState(null);
   const [userName, setUserName] = useState("");
   const [userPhone, setUserPhone] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userLineId, setUserLineId] = useState("");
   const [userFbUrl, setUserFbUrl] = useState("");
-  const [pickUpPlaceName, setPickUpPlaceName] = useState("");
-  const [pickUpPlaceFloor, setPickUpPlaceFloor] = useState("");
-  const [pickUpPlaceClassroom, setPickUpPlaceClassroom] = useState("");
-  const [nowPlaceName, setNowPlaceName] = useState("");
-  const [nowPlaceFloor, setNowPlaceFloor] = useState("");
-  const [nowPlaceClassroom, setNowPlaceClassroom] = useState("");
-
-  const handlePickUpTimeChange = (date) => {
-    setPickUpTime(date);
+  const [lastSeenPlaceName, setLastSeenPlaceName] = useState("");
+  const [lastSeenPlaceFloor, setLastSeenPlaceFloor] = useState("");
+  const [lastSeenPlaceClassroom, setLastSeenPlaceClassroom] = useState("");
+  const handleLastSeenTime = (date) => {
+    setItemLastSeenTime(date);
   };
   const CustomDatePickerInput = ({ value, onClick }) => (
     <div className="input-group">
@@ -67,7 +62,7 @@ const CreateLostItem = () => {
       type: itemType,
       photo: itemPhoto,
       remark: itemRemark,
-      pick_up_time: pickUpTime,
+      pick_up_time: itemLastSeenTime,
       postTime: "postTime",
       user: {
         uid: 0,
@@ -81,23 +76,17 @@ const CreateLostItem = () => {
           fb_url: userFbUrl,
         },
       },
-      pickUpPlace: {
+      lastSeenPlace: {
         pid: 0,
-        name: pickUpPlaceName,
-        floor: pickUpPlaceFloor,
-        classroom: pickUpPlaceClassroom,
-      },
-      nowPlace: {
-        pid: 0,
-        name: nowPlaceName,
-        floor: nowPlaceFloor,
-        classroom: nowPlaceClassroom,
+        name: lastSeenPlaceName,
+        floor: lastSeenPlaceFloor,
+        classroom: lastSeenPlaceClassroom,
       },
     };
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/itemonroads",
+        "http://localhost:8080/api/itemtofinds",
         itemData
       );
       console.log("Item created:", response.data);
@@ -110,18 +99,15 @@ const CreateLostItem = () => {
       setItemType("");
       setItemPhoto("");
       setItemRemark("");
-      setPickUpTime("");
+      setItemLastSeenTime("");
       setUserName("");
       setUserPhone("");
       setUserEmail("");
       setUserLineId("");
       setUserFbUrl("");
-      setPickUpPlaceName("");
-      setPickUpPlaceFloor("");
-      setPickUpPlaceClassroom("");
-      setNowPlaceName("");
-      setNowPlaceFloor("");
-      setNowPlaceClassroom("");
+      setLastSeenPlaceName("");
+      setLastSeenPlaceFloor("");
+      setLastSeenPlaceClassroom("");
     } catch (error) {
       console.error("Error creating item:", error);
     }
@@ -143,7 +129,7 @@ const CreateLostItem = () => {
 
       <Modal show={showModal} onHide={handleClose} size="xl">
         <Modal.Header closeButton>
-          <Modal.Title>Create Lost Item</Modal.Title>
+          <Modal.Title>Create Found Item</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit}>
@@ -232,11 +218,11 @@ const CreateLostItem = () => {
                     className="col"
                     style={{ fontFamily: "Oswald, sans-serif" }}
                   >
-                    <label htmlFor="pickUpTime">Pick Up Time</label>
+                    <label htmlFor="itemLastSeenTime">Last Seen Time</label>
                     <DatePicker
-                      id="pickUpTime"
-                      selected={pickUpTime}
-                      onChange={handlePickUpTimeChange}
+                      id="lastSeenTime"
+                      selected={itemLastSeenTime}
+                      onChange={handleLastSeenTime}
                       dateFormat="yyyy-MM-dd"
                       customInput={<CustomDatePickerInput />}
                     />
@@ -328,95 +314,49 @@ const CreateLostItem = () => {
                 <div class="row mt-3">
                   <div class="col">
                     <label
-                      htmlFor="pickUpPlaceName"
+                      htmlFor="lastSeenPlaceName"
                       style={{ fontFamily: "Oswald, sans-serif" }}
                     >
-                      Pick Up Place
+                      Last Seen Place
                     </label>
                     <input
                       type="text"
                       class="form-control"
-                      id="pickUpPlaceName"
-                      value={pickUpPlaceName}
-                      onChange={(e) => setPickUpPlaceName(e.target.value)}
+                      id="lastSeenPlaceName"
+                      value={lastSeenPlaceName}
+                      onChange={(e) => setLastSeenPlaceName(e.target.value)}
                     />
                   </div>
                   <div class="col">
                     <label
-                      htmlFor="pickUpPlaceFloor"
+                      htmlFor="lastSeenPlaceFloor"
                       style={{ fontFamily: "Oswald, sans-serif" }}
                     >
-                      Pick Up Place Floor
+                      Last Seen Place Floor
                     </label>
                     <input
                       type="text"
                       class="form-control"
-                      id="pickUpPlaceFloor"
-                      value={pickUpPlaceFloor}
-                      onChange={(e) => setPickUpPlaceFloor(e.target.value)}
+                      id="lastSeenPlaceFloor"
+                      value={lastSeenPlaceFloor}
+                      onChange={(e) => setLastSeenPlaceFloor(e.target.value)}
                     />
                   </div>
                   <div class="col">
                     <label
-                      htmlFor="pickUpPlaceClassroom"
+                      htmlFor="lastSeenPlaceClassroom"
                       style={{ fontFamily: "Oswald, sans-serif" }}
                     >
-                      Pick Up Place Classroom
+                      Last Seen Place Classroom
                     </label>
                     <input
                       type="text"
                       class="form-control"
-                      id="pickUpPlaceClassroom"
-                      value={pickUpPlaceClassroom}
-                      onChange={(e) => setPickUpPlaceClassroom(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div class="row mt-3">
-                  <div class="col">
-                    <label
-                      htmlFor="nowPlaceName"
-                      style={{ fontFamily: "Oswald, sans-serif" }}
-                    >
-                      Now Place
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="nowPlaceName"
-                      value={nowPlaceName}
-                      onChange={(e) => setNowPlaceName(e.target.value)}
-                    />
-                  </div>
-                  <div class="col">
-                    <label
-                      htmlFor="nowPlaceFloor"
-                      style={{ fontFamily: "Oswald, sans-serif" }}
-                    >
-                      Now Place Floor
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="nowPlaceFloor"
-                      value={nowPlaceFloor}
-                      onChange={(e) => setNowPlaceFloor(e.target.value)}
-                    />
-                  </div>
-                  <div class="col">
-                    <label
-                      htmlFor="nowPlaceClassroom"
-                      style={{ fontFamily: "Oswald, sans-serif" }}
-                    >
-                      Now Place Classroom
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="nowPlaceClassroom"
-                      value={nowPlaceClassroom}
-                      onChange={(e) => setNowPlaceClassroom(e.target.value)}
+                      id="lastSeenPlaceClassroom"
+                      value={lastSeenPlaceClassroom}
+                      onChange={(e) =>
+                        setLastSeenPlaceClassroom(e.target.value)
+                      }
                     />
                   </div>
                 </div>
@@ -454,4 +394,4 @@ const CreateLostItem = () => {
     </div>
   );
 };
-export default CreateLostItem;
+export default CreateFoundItem;
