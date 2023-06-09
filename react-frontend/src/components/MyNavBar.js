@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import LakkiReddyFont from "../fonts/LakkiReddy-Regular.ttf";
 import Coconut from "../images/coconut.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 const MyNavbar = () => {
   return (
@@ -94,6 +96,19 @@ const MyNavbar = () => {
               }}
             >
               Found List
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              to="/register"
+              className="nav-link"
+              style={{
+                color: "black",
+                marginLeft: "835px",
+                marginTop: "2.5px",
+              }}
+            >
+              <FontAwesomeIcon icon={faUser} style={{ fontSize: "2rem" }} />
             </Link>
           </li>
         </ul>
