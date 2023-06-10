@@ -34,6 +34,7 @@ public class ItemOnRoadController {
 
     @PostMapping("")
     public ResponseEntity<ItemOnRoad> createItemOnRoad(@Valid @RequestBody ItemOnRoad itemOnRoad) {
+        System.out.println(itemOnRoad.getPick_up_time());
         ItemOnRoad result = itemOnRoadService.saveItemOnRoad(itemOnRoad);
         return ResponseEntity.ok().body(result);
     }

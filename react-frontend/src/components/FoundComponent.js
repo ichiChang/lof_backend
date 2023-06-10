@@ -102,7 +102,7 @@ const FoundComponent = () => {
     },
     moreButton: {
       cursor: "pointer",
-      width: "110px",
+      width: "115px",
       height: "55px",
       marginLeft: "30px",
       marginRight: "20px",

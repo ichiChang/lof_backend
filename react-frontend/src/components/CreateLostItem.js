@@ -4,7 +4,8 @@ import axios from "axios";
 import { Button, Modal, Toast } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
-import DatePicker from "react-datepicker";
+import ReactDatetime from "react-datetime";
+import "react-datetime/css/react-datetime.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
@@ -36,7 +37,8 @@ const CreateLostItem = () => {
   const [nowPlaceClassroom, setNowPlaceClassroom] = useState("");
 
   const handlePickUpTimeChange = (date) => {
-    setPickUpTime(date);
+    const back = JSON.stringify(date);
+    setPickUpTime(back.substring(0, 11));
   };
   const CustomDatePickerInput = ({ value, onClick }) => (
     <div className="input-group">
@@ -246,12 +248,13 @@ const CreateLostItem = () => {
                     style={{ fontFamily: "Oswald, sans-serif" }}
                   >
                     <label htmlFor="pickUpTime">Pick Up Time</label>
-                    <DatePicker
+                    <ReactDatetime
                       id="pickUpTime"
-                      selected={pickUpTime}
+                      value={pickUpTime}
                       onChange={handlePickUpTimeChange}
-                      dateFormat="yyyy-MM-dd"
-                      customInput={<CustomDatePickerInput />}
+                      inputProps={{
+                        placeholder: "Pick Up Time",
+                      }}
                     />
                   </div>
                 </div>

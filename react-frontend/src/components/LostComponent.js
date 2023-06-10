@@ -86,6 +86,7 @@ const LostComponent = () => {
       marginBottom: "10px",
     },
     searchBarContainer: {
+      position: "relative", // 新增
       display: "flex",
       alignItems: "center",
     },
@@ -102,22 +103,22 @@ const LostComponent = () => {
     },
     moreButton: {
       cursor: "pointer",
-      width: "110px",
+      width: "115px",
       height: "55px",
       marginLeft: "30px",
       marginRight: "20px",
     },
     searchIndicator: {
       position: "absolute",
-      bottom: "445px",
-      right: "515px",
+      bottom: "calc(100% - 60px)", // 調整底部位置，具體數值根據你的需求調整
+      right: "225px", // 調整右側位置，具體數值根據你的需求調整
       width: "700px",
       height: "50px",
       backgroundColor: "#D4BBFF",
       borderRadius: "30px",
       border: "solid",
       borderWidth: "2px",
-      zIndex: 0, // 新增
+      zIndex: 0,
     },
   };
 
@@ -181,16 +182,88 @@ const LostComponent = () => {
           ))}
         </div>
 
-        <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>More Information</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{/* Add additional content here */}</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
-              Close
-            </Button>
-          </Modal.Footer>
+        <Modal
+          show={showModal}
+          onHide={handleCloseModal}
+          dialogClassName="modal-dialog-centered modal-lg"
+        >
+          <Modal.Body
+            style={{
+              backgroundColor: "#FFFFF0",
+              borderRadius: "40px",
+              height: "400px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Button
+                variant="secondary"
+                onClick={handleCloseModal}
+                style={{
+                  borderRadius: "40px",
+                  borderWidth: "4px",
+                  borderColor: "black",
+                  width: "450px",
+                  height: "100px",
+                  marginBottom: "50px",
+                  fontFamily: "'Lalezar', cursive",
+                  fontSize: "50px",
+                  color: "black",
+                  backgroundColor: "#FFA800",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  boxShadow: "10px 10px 0px rgba(0, 0, 0, 0.2)",
+                  transition: "transform 0.1s",
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform =
+                    "translateY(10px) translateX(10px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = "none";
+                }}
+              >
+                LOCATIONS
+              </Button>
+              <Button
+                variant="primary"
+                style={{
+                  borderRadius: "40px",
+                  borderWidth: "4px",
+                  borderColor: "black",
+                  width: "450px",
+                  height: "100px",
+                  fontFamily: "'Lalezar', cursive",
+                  fontSize: "50px",
+                  color: "black",
+                  backgroundColor: "#80D1FF",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  boxShadow: "10px 10px 0px rgba(0, 0, 0, 0.2)",
+                  transition: "transform 0.1s",
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform =
+                    "translateY(10px) translateX(10px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = "none";
+                }}
+              >
+                CATEGORIES
+              </Button>
+            </div>
+          </Modal.Body>
         </Modal>
       </div>
     </div>
