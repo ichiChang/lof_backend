@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import FoundService from "../services/FoundService";
 import MyNavbar from "./MyNavBar";
 import CreateFoundItem from "./CreateFounditem";
+import More from "../images/more.png";
+import { Modal, Button } from "react-bootstrap";
 
 const FoundComponent = () => {
   const [founds, setFounds] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetchFoundItems();
@@ -34,6 +37,14 @@ const FoundComponent = () => {
           console.error("Error searching found items:", error);
         });
     }
+  };
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   const styles = {
@@ -68,9 +79,8 @@ const FoundComponent = () => {
       height: "40%",
     },
     heading: {
-      fontFamily: "Helvetica Neue, Arial, sans-serif",
-      fontWeight: "bold",
-      fontSize: "50px",
+      fontFamily: "'Lalezar', cursive",
+      fontSize: "64px",
       color: "#333",
       marginTop: "20px",
       marginBottom: "10px",
@@ -78,15 +88,36 @@ const FoundComponent = () => {
     searchBarContainer: {
       display: "flex",
       alignItems: "center",
-      marginTop: "10px",
     },
     searchInput: {
       borderRadius: "30px",
       padding: "10px",
-      width: "500px",
+      width: "700px",
+      height: "50px",
       marginRight: "10px",
-      border: "none",
-      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+      border: "solid",
+      position: "relative", // 新增
+      borderWidth: "2px",
+      zIndex: 1, // 新增
+    },
+    moreButton: {
+      cursor: "pointer",
+      width: "110px",
+      height: "55px",
+      marginLeft: "30px",
+      marginRight: "20px",
+    },
+    searchIndicator: {
+      position: "absolute",
+      bottom: "445px",
+      right: "515px",
+      width: "700px",
+      height: "50px",
+      backgroundColor: "#D4BBFF",
+      borderRadius: "30px",
+      border: "solid",
+      borderWidth: "2px",
+      zIndex: 0, // 新增
     },
   };
 
@@ -94,7 +125,7 @@ const FoundComponent = () => {
     <div>
       <MyNavbar />
       <div style={styles.container}>
-        <h1 style={styles.heading}>Found Items List</h1>
+        <h1 style={styles.heading}>Found List</h1>
 
         <div style={styles.searchBarContainer}>
           <input
@@ -104,6 +135,16 @@ const FoundComponent = () => {
             value={searchTerm}
             onChange={handleSearch}
           />
+          <div style={styles.searchIndicator}></div>
+
+          <img
+            src={More}
+            alt="More"
+            style={styles.moreButton}
+            onClick={handleShowModal}
+          />
+
+          <CreateFoundItem />
         </div>
 
         <div style={styles.cardContainer}>
@@ -139,7 +180,17 @@ const FoundComponent = () => {
             </div>
           ))}
         </div>
-        <CreateFoundItem />
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>More Information</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{/* Add additional content here */}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </div>
   );

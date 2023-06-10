@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import Plus from "../images/plus.svg";
 
 const CreateFoundItem = () => {
   const [showModal, setShowModal] = useState(false);
@@ -123,9 +124,21 @@ const CreateFoundItem = () => {
 
   return (
     <div>
-      <Button variant="primary" onClick={handleShow}>
-        新增物品
-      </Button>
+      <Button
+        variant="primary"
+        onClick={handleShow}
+        style={{
+          padding: 0,
+          border: "none",
+          background: "none",
+          height: "55px",
+          width: "55px",
+          backgroundImage: `url(${Plus})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "39% 43%",
+          backgroundSize: "160px 160px",
+        }}
+      ></Button>
 
       <Modal show={showModal} onHide={handleClose} size="xl">
         <Modal.Header closeButton>
