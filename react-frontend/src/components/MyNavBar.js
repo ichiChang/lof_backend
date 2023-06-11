@@ -100,7 +100,7 @@ const MyNavbar = () => {
           </li>
           <li className="nav-item">
             <Link
-              to="/register"
+              to="/login"
               className="nav-link"
               style={{
                 color: "black",

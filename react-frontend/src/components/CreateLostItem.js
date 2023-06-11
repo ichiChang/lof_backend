@@ -8,7 +8,6 @@ import ReactDatetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
-import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import Plus from "../images/plus.svg";
 
 const CreateLostItem = () => {
@@ -40,26 +39,6 @@ const CreateLostItem = () => {
     const back = JSON.stringify(date);
     setPickUpTime(back.substring(0, 11));
   };
-  const CustomDatePickerInput = ({ value, onClick }) => (
-    <div className="input-group">
-      <input
-        type="text"
-        className="form-control"
-        value={value}
-        onClick={onClick}
-        readOnly
-      />
-      <div className="input-group-append">
-        <button
-          className="btn btn-outline-secondary"
-          type="button"
-          onClick={onClick}
-        >
-          <FontAwesomeIcon icon={faCalendarAlt} />
-        </button>
-      </div>
-    </div>
-  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();

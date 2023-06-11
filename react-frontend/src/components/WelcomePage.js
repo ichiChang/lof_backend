@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Righttop from "../images/20.svg";
 import RightBottom from "../images/17.svg";
 import LeftBottom from "../images/18.svg";
@@ -14,6 +14,12 @@ import MyNavbar from "./MyNavBar";
 import { Link } from "react-router-dom";
 
 const WelcomePage = () => {
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+    setAnimate(true);
+  }, []);
+
   return (
     <div
       style={{
@@ -39,10 +45,11 @@ const WelcomePage = () => {
             backgroundSize: "800px 700px",
             position: "absolute",
             top: "15%",
-            right: "50%",
+            right: animate ? "50%" : "100%",
             width: "500px",
             height: "500px",
-            transform: "scaleX(-1)", // 水平翻转
+            transform: "scaleX(-1)",
+            transition: "right 1s ease-in-out",
           }}
         />
         <div
@@ -53,9 +60,10 @@ const WelcomePage = () => {
             backgroundSize: "1500px 750px",
             position: "absolute",
             top: "35%",
-            right: "20%",
+            right: animate ? "20%" : "100%",
             width: "1000px",
             height: "300px",
+            transition: "right 1s ease-in-out",
           }}
         />
         <div
@@ -66,9 +74,10 @@ const WelcomePage = () => {
             backgroundSize: "500px 500px",
             position: "absolute",
             top: "18%",
-            right: "19%",
+            right: animate ? "19%" : "100%",
             width: "800px",
             height: "500px",
+            transition: "right 1s ease-in-out",
           }}
         />
 
@@ -80,9 +89,10 @@ const WelcomePage = () => {
             backgroundSize: "500px 500px",
             position: "absolute",
             top: "113px",
-            right: "0",
+            right: animate ? "0" : "100%",
             width: "200px",
             height: "200px",
+            transition: "right 1s ease-in-out",
           }}
         />
         <div
@@ -93,9 +103,10 @@ const WelcomePage = () => {
             backgroundSize: "3500px 1500px",
             position: "absolute",
             bottom: "0",
-            right: "0",
+            right: animate ? "0" : "100%",
             width: "800px",
             height: "250px",
+            transition: "right 1s ease-in-out",
           }}
         />
         <div
@@ -109,6 +120,7 @@ const WelcomePage = () => {
             right: "21%",
             width: "300px",
             height: "300px",
+            transition: "right 1s ease-in-out",
           }}
         />
 
@@ -123,6 +135,7 @@ const WelcomePage = () => {
             left: "10px",
             width: "150px",
             height: "120px",
+            transition: "right 1s ease-in-out",
           }}
         />
       </div>
@@ -134,9 +147,10 @@ const WelcomePage = () => {
           backgroundSize: "500px 450px",
           position: "absolute",
           top: "45%",
-          right: "30%",
+          right: animate ? "30%" : "100%",
           width: "1000px",
           height: "300px",
+          transition: "right 1s ease-in-out",
         }}
       />
       <Link to="/second">
@@ -148,10 +162,11 @@ const WelcomePage = () => {
             backgroundSize: "900px 700px",
             position: "absolute",
             top: "45%",
-            right: "20%",
+            right: animate ? "20%" : "100%",
             width: "500px",
             height: "400px",
             cursor: "pointer",
+            transition: "right 1s ease-in-out",
           }}
         />
         <div
@@ -162,10 +177,11 @@ const WelcomePage = () => {
             backgroundSize: "500px 300px",
             position: "absolute",
             top: "46.5%",
-            right: "22%",
+            right: animate ? "22%" : "100%",
             width: "300px",
             height: "300px",
-            transform: "rotate(10deg)",
+            transform: animate ? "rotate(10deg)" : "rotate(0deg)",
+            transition: "right 1s ease-in-out, transform 1s ease-in-out",
           }}
         />
         <div
@@ -176,10 +192,11 @@ const WelcomePage = () => {
             backgroundSize: "150px 150px",
             position: "absolute",
             top: "60%",
-            right: "41%",
+            right: animate ? "41%" : "100%",
             width: "150px",
             height: "150px",
-            transform: "rotate(-20deg)",
+            transform: animate ? "rotate(-20deg)" : "rotate(0deg)",
+            transition: "right 1s ease-in-out, transform 1s ease-in-out",
           }}
         />
       </Link>

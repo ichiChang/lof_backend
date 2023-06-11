@@ -9,12 +9,14 @@ import com.example.dbmsproject.backend.Model.User;
 import java.util.Collection;
 import java.util.List;
 
-
-
-public interface ItemOnRoadRepository extends JpaRepository<ItemOnRoad,Long>{
+public interface ItemOnRoadRepository extends JpaRepository<ItemOnRoad, Long> {
     Collection<ItemOnRoad> findByUser(User user);
+
     Collection<ItemOnRoad> findByName(String name);
+
     List<ItemOnRoad> findByNameContaining(String name);
+
     Collection<ItemOnRoad> findByType(String type);
+
     Collection<ItemOnRoad> findByPickUpPlaceIn(Collection<Place> pickUpPlaces);
 }

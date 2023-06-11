@@ -9,8 +9,10 @@ const LostComponent = () => {
   const [losts, setLosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [isAnimated, setIsAnimated] = useState(false); // 新增状态
 
   useEffect(() => {
+    setIsAnimated(true); // 设置动画状态为true，使元素滑入
     fetchLostItems();
   }, []);
 
@@ -120,151 +122,168 @@ const LostComponent = () => {
       borderWidth: "2px",
       zIndex: 0,
     },
+    animateContainer: {
+      opacity: 0, // 默认隐藏元素
+      transform: "translateY(100px)", // 初始位置在下方
+      transition: "opacity 1s, transform 1s", // 过渡动画效果
+    },
+
+    animateContainerVisible: {
+      opacity: 1, // 显示元素
+      transform: "translateY(0)", // 移动到初始位置
+    },
   };
 
   return (
     <div>
       <MyNavbar />
-      <div style={styles.container}>
-        <h1 style={styles.heading}>Lost List</h1>
+      <div
+        style={{
+          ...styles.animateContainer,
+          ...(isAnimated && styles.animateContainerVisible),
+        }}
+      >
+        <div style={styles.container}>
+          <h1 style={styles.heading}>Lost List</h1>
 
-        <div style={styles.searchBarContainer}>
-          <input
-            type="text"
-            style={styles.searchInput}
-            placeholder="Search"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-          <div style={styles.searchIndicator}></div>
+          <div style={styles.searchBarContainer}>
+            <input
+              type="text"
+              style={styles.searchInput}
+              placeholder="Search"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+            <div style={styles.searchIndicator}></div>
 
-          <img
-            src={More}
-            alt="More"
-            style={styles.moreButton}
-            onClick={handleShowModal}
-          />
+            <img
+              src={More}
+              alt="More"
+              style={styles.moreButton}
+              onClick={handleShowModal}
+            />
 
-          <CreateLostItem />
-        </div>
+            <CreateLostItem />
+          </div>
 
-        <div style={styles.cardContainer}>
-          {losts.map((lost) => (
-            <div key={lost.iid} className="card" style={styles.card}>
-              {lost.photo && (
-                <img
-                  src={lost.photo}
-                  className="card-img-top"
-                  alt={lost.name}
-                  style={styles.cardImage}
-                />
-              )}
-              <div className="card-body text-center" style={styles.cardBody}>
-                <h5
-                  className="card-title"
-                  style={{ fontSize: "30px", fontWeight: "bold" }}
-                >
-                  {lost.name}
-                </h5>
-                <p
-                  className="card-text"
-                  style={{ fontFamily: "Microsoft YaHei" }}
-                >
-                  {lost.type}
-                  <br />
-                  {lost.pickUpPlace.name} {lost.pickUpPlace.floor}{" "}
-                  {lost.pickUpPlace.classroom}
-                  <br />
-                  {lost.pick_up_time}
-                </p>
+          <div style={styles.cardContainer}>
+            {losts.map((lost) => (
+              <div key={lost.iid} className="card" style={styles.card}>
+                {lost.photo && (
+                  <img
+                    src={lost.photo}
+                    className="card-img-top"
+                    alt={lost.name}
+                    style={styles.cardImage}
+                  />
+                )}
+                <div className="card-body text-center" style={styles.cardBody}>
+                  <h5
+                    className="card-title"
+                    style={{ fontSize: "30px", fontWeight: "bold" }}
+                  >
+                    {lost.name}
+                  </h5>
+                  <p
+                    className="card-text"
+                    style={{ fontFamily: "Microsoft YaHei" }}
+                  >
+                    {lost.type}
+                    <br />
+                    {lost.pickUpPlace.name} {lost.pickUpPlace.floor}{" "}
+                    {lost.pickUpPlace.classroom}
+                    <br />
+                    {lost.pick_up_time}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <Modal
-          show={showModal}
-          onHide={handleCloseModal}
-          dialogClassName="modal-dialog-centered modal-lg"
-        >
-          <Modal.Body
-            style={{
-              backgroundColor: "#FFFFF0",
-              borderRadius: "40px",
-              height: "400px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+          <Modal
+            show={showModal}
+            onHide={handleCloseModal}
+            dialogClassName="modal-dialog-centered modal-lg"
           >
-            <div
+            <Modal.Body
               style={{
+                backgroundColor: "#FFFFF0",
+                borderRadius: "40px",
+                height: "400px",
                 display: "flex",
-                flexDirection: "column",
+                justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              <Button
-                variant="secondary"
-                onClick={handleCloseModal}
+              <div
                 style={{
-                  borderRadius: "40px",
-                  borderWidth: "4px",
-                  borderColor: "black",
-                  width: "450px",
-                  height: "100px",
-                  marginBottom: "50px",
-                  fontFamily: "'Lalezar', cursive",
-                  fontSize: "50px",
-                  color: "black",
-                  backgroundColor: "#FFA800",
                   display: "flex",
-                  justifyContent: "center",
+                  flexDirection: "column",
                   alignItems: "center",
-                  boxShadow: "10px 10px 0px rgba(0, 0, 0, 0.2)",
-                  transition: "transform 0.1s",
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.transform =
-                    "translateY(10px) translateX(10px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = "none";
                 }}
               >
-                LOCATIONS
-              </Button>
-              <Button
-                variant="primary"
-                style={{
-                  borderRadius: "40px",
-                  borderWidth: "4px",
-                  borderColor: "black",
-                  width: "450px",
-                  height: "100px",
-                  fontFamily: "'Lalezar', cursive",
-                  fontSize: "50px",
-                  color: "black",
-                  backgroundColor: "#80D1FF",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  boxShadow: "10px 10px 0px rgba(0, 0, 0, 0.2)",
-                  transition: "transform 0.1s",
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.transform =
-                    "translateY(10px) translateX(10px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = "none";
-                }}
-              >
-                CATEGORIES
-              </Button>
-            </div>
-          </Modal.Body>
-        </Modal>
+                <Button
+                  variant="secondary"
+                  onClick={handleCloseModal}
+                  style={{
+                    borderRadius: "40px",
+                    borderWidth: "4px",
+                    borderColor: "black",
+                    width: "450px",
+                    height: "100px",
+                    marginBottom: "50px",
+                    fontFamily: "'Lalezar', cursive",
+                    fontSize: "50px",
+                    color: "black",
+                    backgroundColor: "#FFA800",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    boxShadow: "10px 10px 0px rgba(0, 0, 0, 0.2)",
+                    transition: "transform 0.1s",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform =
+                      "translateY(10px) translateX(10px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = "none";
+                  }}
+                >
+                  LOCATIONS
+                </Button>
+                <Button
+                  variant="primary"
+                  style={{
+                    borderRadius: "40px",
+                    borderWidth: "4px",
+                    borderColor: "black",
+                    width: "450px",
+                    height: "100px",
+                    fontFamily: "'Lalezar', cursive",
+                    fontSize: "50px",
+                    color: "black",
+                    backgroundColor: "#80D1FF",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    boxShadow: "10px 10px 0px rgba(0, 0, 0, 0.2)",
+                    transition: "transform 0.1s",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform =
+                      "translateY(10px) translateX(10px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = "none";
+                  }}
+                >
+                  CATEGORIES
+                </Button>
+              </div>
+            </Modal.Body>
+          </Modal>
+        </div>
       </div>
     </div>
   );

@@ -9,8 +9,10 @@ const FoundComponent = () => {
   const [founds, setFounds] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [isAnimated, setIsAnimated] = useState(false); // 新增状态
 
   useEffect(() => {
+    setIsAnimated(true); // 设置动画状态为true，使元素滑入
     fetchFoundItems();
   }, []);
 
@@ -86,6 +88,7 @@ const FoundComponent = () => {
       marginBottom: "10px",
     },
     searchBarContainer: {
+      position: "relative", // 新增
       display: "flex",
       alignItems: "center",
     },
@@ -109,88 +112,177 @@ const FoundComponent = () => {
     },
     searchIndicator: {
       position: "absolute",
-      bottom: "445px",
-      right: "515px",
+      bottom: "calc(100% - 60px)", // 調整底部位置，具體數值根據你的需求調整
+      right: "225px", // 調整右側位置，具體數值根據你的需求調整
       width: "700px",
       height: "50px",
       backgroundColor: "#D4BBFF",
       borderRadius: "30px",
       border: "solid",
       borderWidth: "2px",
-      zIndex: 0, // 新增
+      zIndex: 0,
+    },
+    animateContainer: {
+      opacity: 0, // 默认隐藏元素
+      transform: "translateY(100px)", // 初始位置在下方
+      transition: "opacity 1s, transform 1s", // 过渡动画效果
+    },
+
+    animateContainerVisible: {
+      opacity: 1, // 显示元素
+      transform: "translateY(0)", // 移动到初始位置
     },
   };
 
   return (
     <div>
       <MyNavbar />
-      <div style={styles.container}>
-        <h1 style={styles.heading}>Found List</h1>
+      <div
+        style={{
+          ...styles.animateContainer,
+          ...(isAnimated && styles.animateContainerVisible),
+        }}
+      >
+        <div style={styles.container}>
+          <h1 style={styles.heading}>Found List</h1>
 
-        <div style={styles.searchBarContainer}>
-          <input
-            type="text"
-            style={styles.searchInput}
-            placeholder="Search"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-          <div style={styles.searchIndicator}></div>
+          <div style={styles.searchBarContainer}>
+            <input
+              type="text"
+              style={styles.searchInput}
+              placeholder="Search"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+            <div style={styles.searchIndicator}></div>
 
-          <img
-            src={More}
-            alt="More"
-            style={styles.moreButton}
-            onClick={handleShowModal}
-          />
+            <img
+              src={More}
+              alt="More"
+              style={styles.moreButton}
+              onClick={handleShowModal}
+            />
 
-          <CreateFoundItem />
-        </div>
+            <CreateFoundItem />
+          </div>
 
-        <div style={styles.cardContainer}>
-          {founds.map((found) => (
-            <div key={found.iid} className="card" style={styles.card}>
-              {found.photo && (
-                <img
-                  src={found.photo}
-                  className="card-img-top"
-                  alt={found.name}
-                  style={styles.cardImage}
-                />
-              )}
-              <div className="card-body text-center" style={styles.cardBody}>
-                <h5
-                  className="card-title"
-                  style={{ fontSize: "30px", fontWeight: "bold" }}
-                >
-                  {found.name}
-                </h5>
-                <p
-                  className="card-text"
-                  style={{ fontFamily: "Microsoft YaHei" }}
-                >
-                  {found.type}
-                  <br />
-                  {found.lastSeenPlace.name} {found.lastSeenPlace.floor}{" "}
-                  {found.lastSeenPlace.classroom}
-                  <br />
-                  {found.lastSeenTime}
-                </p>
+          <div style={styles.cardContainer}>
+            {founds.map((found) => (
+              <div key={found.iid} className="card" style={styles.card}>
+                {found.photo && (
+                  <img
+                    src={found.photo}
+                    className="card-img-top"
+                    alt={found.name}
+                    style={styles.cardImage}
+                  />
+                )}
+                <div className="card-body text-center" style={styles.cardBody}>
+                  <h5
+                    className="card-title"
+                    style={{ fontSize: "30px", fontWeight: "bold" }}
+                  >
+                    {found.name}
+                  </h5>
+                  <p
+                    className="card-text"
+                    style={{ fontFamily: "Microsoft YaHei" }}
+                  >
+                    {found.type}
+                    <br />
+                    {found.lastSeenPlace.name} {found.lastSeenPlace.floor}{" "}
+                    {found.lastSeenPlace.classroom}
+                    <br />
+                    {found.lastSeenTime}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <Modal
+            show={showModal}
+            onHide={handleCloseModal}
+            dialogClassName="modal-dialog-centered modal-lg"
+          >
+            <Modal.Body
+              style={{
+                backgroundColor: "#FFFFF0",
+                borderRadius: "40px",
+                height: "400px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Button
+                  variant="secondary"
+                  onClick={handleCloseModal}
+                  style={{
+                    borderRadius: "40px",
+                    borderWidth: "4px",
+                    borderColor: "black",
+                    width: "450px",
+                    height: "100px",
+                    marginBottom: "50px",
+                    fontFamily: "'Lalezar', cursive",
+                    fontSize: "50px",
+                    color: "black",
+                    backgroundColor: "#FFA800",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    boxShadow: "10px 10px 0px rgba(0, 0, 0, 0.2)",
+                    transition: "transform 0.1s",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform =
+                      "translateY(10px) translateX(10px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = "none";
+                  }}
+                >
+                  LOCATIONS
+                </Button>
+                <Button
+                  variant="primary"
+                  style={{
+                    borderRadius: "40px",
+                    borderWidth: "4px",
+                    borderColor: "black",
+                    width: "450px",
+                    height: "100px",
+                    fontFamily: "'Lalezar', cursive",
+                    fontSize: "50px",
+                    color: "black",
+                    backgroundColor: "#80D1FF",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    boxShadow: "10px 10px 0px rgba(0, 0, 0, 0.2)",
+                    transition: "transform 0.1s",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform =
+                      "translateY(10px) translateX(10px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = "none";
+                  }}
+                >
+                  CATEGORIES
+                </Button>
+              </div>
+            </Modal.Body>
+          </Modal>
         </div>
-        <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>More Information</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{/* Add additional content here */}</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
       </div>
     </div>
   );
