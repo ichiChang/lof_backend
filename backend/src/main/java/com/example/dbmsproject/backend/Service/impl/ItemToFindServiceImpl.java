@@ -35,6 +35,11 @@ public class ItemToFindServiceImpl implements ItemToFindService {
         itemToFind.setPostTime(date);
         User user = userService.findById(userID).get();
         itemToFind.setUser(user);
+        if (!itemToFind.getLastSeenPlace().getFloor().equals("")) {
+            Place originPlace = itemToFind.getLastSeenPlace();
+            originPlace.setFloor(originPlace.getFloor() + "樓");
+            itemToFind.setLastSeenPlace(originPlace);
+        }
         itemToFindRepository.save(itemToFind);
         return itemToFind;
     }
@@ -42,27 +47,15 @@ public class ItemToFindServiceImpl implements ItemToFindService {
     @Override
     public Collection<ItemToFind> getItemToFinds() {
         Collection<ItemToFind> output = itemToFindRepository.findAll();
-        for (ItemToFind itemToFind : output) {
-            if (!itemToFind.getLastSeenPlace().getFloor().equals("")) {
-                Place originPlace = itemToFind.getLastSeenPlace();
-                originPlace.setFloor(originPlace.getFloor() + "樓");
-                itemToFind.setLastSeenPlace(originPlace);
-            }
-        }
+
         return output;
 
     }
 
     @Override
-    public Collection<ItemToFind> findByUser(User user) {
+    public Collection<ItemToFind> findByUser(Long userID) {
+        User user = userService.findById(userID).get();
         Collection<ItemToFind> output = itemToFindRepository.findByUser(user);
-        for (ItemToFind itemToFind : output) {
-            if (!itemToFind.getLastSeenPlace().getFloor().equals("")) {
-                Place originPlace = itemToFind.getLastSeenPlace();
-                originPlace.setFloor(originPlace.getFloor() + "樓");
-                itemToFind.setLastSeenPlace(originPlace);
-            }
-        }
         return output;
     }
 
@@ -75,13 +68,7 @@ public class ItemToFindServiceImpl implements ItemToFindService {
     @Override
     public Collection<ItemToFind> findByName(String name) {
         Collection<ItemToFind> output = itemToFindRepository.findByNameContaining(name);
-        for (ItemToFind itemToFind : output) {
-            if (!itemToFind.getLastSeenPlace().getFloor().equals("")) {
-                Place originPlace = itemToFind.getLastSeenPlace();
-                originPlace.setFloor(originPlace.getFloor() + "樓");
-                itemToFind.setLastSeenPlace(originPlace);
-            }
-        }
+
         return output;
     }
 
@@ -104,6 +91,12 @@ public class ItemToFindServiceImpl implements ItemToFindService {
         }
         itemToFindRepository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public Collection<ItemToFind> findByType(String type) {
+        Collection<ItemToFind> result = itemToFindRepository.findByType(type);
+        return result;
     }
 
 }

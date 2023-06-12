@@ -4,16 +4,17 @@ import java.util.Collection;
 import java.util.Optional;
 
 import com.example.dbmsproject.backend.Model.ItemToFind;
-import com.example.dbmsproject.backend.Model.User;
 
 public interface ItemToFindService {
     public ItemToFind saveItemToFind(ItemToFind itemToFind, Long userID);
 
     public Collection<ItemToFind> getItemToFinds();
 
-    public Collection<ItemToFind> findByUser(User user);
+    public Collection<ItemToFind> findByUser(Long userId);
 
     public Collection<ItemToFind> findByName(String name);
+
+    public Collection<ItemToFind> findByType(String type);
 
     public Optional<ItemToFind> findById(Long id);
 

@@ -35,6 +35,16 @@ public class ItemOnRoadServiceImpl implements ItemOnRoadService {
         itemOnRoad.setPostTime(date);
         User user = userService.findById(userID).get();
         itemOnRoad.setUser(user);
+        Place originPickUpPlace = itemOnRoad.getPickUpPlace();
+        Place originNowPlace = itemOnRoad.getNowPlace();
+        if (!originPickUpPlace.getFloor().equals("")) {
+            originPickUpPlace.setFloor(originPickUpPlace.getFloor() + "樓");
+        }
+        if (!originNowPlace.getFloor().equals("")) {
+            originNowPlace.setFloor(originNowPlace.getFloor() + "樓");
+        }
+        itemOnRoad.setNowPlace(originNowPlace);
+        itemOnRoad.setPickUpPlace(originPickUpPlace);
         itemOnRoadRepository.save(itemOnRoad);
         return itemOnRoad;
     }
@@ -42,18 +52,6 @@ public class ItemOnRoadServiceImpl implements ItemOnRoadService {
     @Override
     public Collection<ItemOnRoad> getItemOnRoads() {
         Collection<ItemOnRoad> output = itemOnRoadRepository.findAll();
-        for (ItemOnRoad itemOnRoad : output) {
-            Place originPickUpPlace = itemOnRoad.getPickUpPlace();
-            Place originNowPlace = itemOnRoad.getNowPlace();
-            if (!originPickUpPlace.getFloor().equals("")) {
-                originPickUpPlace.setFloor(originPickUpPlace.getFloor() + "樓");
-            }
-            if (!originNowPlace.getFloor().equals("")) {
-                originNowPlace.setFloor(originNowPlace.getFloor() + "樓");
-            }
-            itemOnRoad.setNowPlace(originNowPlace);
-            itemOnRoad.setPickUpPlace(originPickUpPlace);
-        }
         return output;
     }
 
@@ -64,25 +62,14 @@ public class ItemOnRoadServiceImpl implements ItemOnRoadService {
     }
 
     @Override
-    public Collection<ItemOnRoad> findByUser(User user) {
+    public Collection<ItemOnRoad> findByUser(Long userID) {
+        User user = userService.findById(userID).get();
         return itemOnRoadRepository.findByUser(user);
     }
 
     @Override
     public Collection<ItemOnRoad> findByName(String name) {
         Collection<ItemOnRoad> output = itemOnRoadRepository.findByNameContaining(name);
-        for (ItemOnRoad itemOnRoad : output) {
-            Place originPickUpPlace = itemOnRoad.getPickUpPlace();
-            Place originNowPlace = itemOnRoad.getNowPlace();
-            if (!originPickUpPlace.getFloor().equals("")) {
-                originPickUpPlace.setFloor(originPickUpPlace.getFloor() + "樓");
-            }
-            if (!originNowPlace.getFloor().equals("")) {
-                originNowPlace.setFloor(originNowPlace.getFloor() + "樓");
-            }
-            itemOnRoad.setNowPlace(originNowPlace);
-            itemOnRoad.setPickUpPlace(originPickUpPlace);
-        }
         return output;
     }
 
@@ -109,8 +96,8 @@ public class ItemOnRoadServiceImpl implements ItemOnRoadService {
 
     @Override
     public Collection<ItemOnRoad> findByType(String type) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByType'");
+        Collection<ItemOnRoad> result = itemOnRoadRepository.findByType(type);
+        return result;
     }
 
 }

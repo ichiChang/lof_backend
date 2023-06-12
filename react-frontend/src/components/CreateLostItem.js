@@ -36,6 +36,26 @@ const CreateLostItem = () => {
     setPickUpTime(formattedDate);
     console.log(pickUpTime);
   };
+  const CustomDatePickerInput = ({ value, onClick }) => (
+    <div className="input-group">
+      <input
+        type="text"
+        className="form-control"
+        value={pickUpTime}
+        onClick={onClick}
+        readOnly
+      />
+      <div className="input-group-append">
+        <button
+          className="btn btn-outline-secondary"
+          type="button"
+          onClick={onClick}
+        >
+          <FontAwesomeIcon icon={faCalendarAlt} />
+        </button>
+      </div>
+    </div>
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -128,7 +148,11 @@ const CreateLostItem = () => {
         }}
       ></Button>
 
-      <Modal show={showModal} onHide={handleClose} size="xl">
+      <Modal
+        show={showModal}
+        onHide={handleClose}
+        dialogClassName="modal-dialog-centered modal-lg"
+      >
         <Modal.Header closeButton>
           <Modal.Title>Create Lost Item</Modal.Title>
         </Modal.Header>
@@ -233,19 +257,7 @@ const CreateLostItem = () => {
                       minTime={new Date().setHours(0, 0)}
                       maxTime={new Date().setHours(23, 45)}
                       timeCaption="Time"
-                      customInput={
-                        <div className="input-group">
-                          <input
-                            type="text"
-                            className="form-control"
-                            value={pickUpTime}
-                            readOnly
-                          />
-                          <span className="input-group-text">
-                            <FontAwesomeIcon icon={faCalendarAlt} />
-                          </span>
-                        </div>
-                      }
+                      customInput={<CustomDatePickerInput />}
                     />
                   </div>
                 </div>
@@ -365,10 +377,12 @@ const CreateLostItem = () => {
         delay={3000}
         autohide
         style={{
+          fontSize: "24px",
           position: "fixed",
           bottom: "20px",
           right: "20px",
-          minWidth: "200px",
+          minWidth: "300px",
+          fontFamily: "'Lalezar', cursive",
         }}
       >
         <Toast.Header>

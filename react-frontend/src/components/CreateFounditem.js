@@ -136,7 +136,11 @@ const CreateFoundItem = () => {
         }}
       ></Button>
 
-      <Modal show={showModal} onHide={handleClose} size="xl">
+      <Modal
+        show={showModal}
+        onHide={handleClose}
+        dialogClassName="modal-dialog-centered modal-lg"
+      >
         <Modal.Header closeButton>
           <Modal.Title>Create Found Item</Modal.Title>
         </Modal.Header>
@@ -313,10 +317,12 @@ const CreateFoundItem = () => {
         delay={3000}
         autohide
         style={{
+          fontSize: "24px",
           position: "fixed",
           bottom: "20px",
           right: "20px",
-          minWidth: "200px",
+          minWidth: "300px",
+          fontFamily: "'Lalezar', cursive",
         }}
       >
         <Toast.Header>

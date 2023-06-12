@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dbmsproject.backend.Model.ItemToFind;
-import com.example.dbmsproject.backend.Model.User;
 import com.example.dbmsproject.backend.Service.ItemToFindService;
 
 import jakarta.validation.Valid;
@@ -30,7 +29,8 @@ public class ItemToFindController {
     // C
 
     @PostMapping("/itemtofinds/{userID}")
-    public ResponseEntity<ItemToFind> createItemToFind(@Valid @RequestBody ItemToFind itemtofind, @PathVariable Long userID) {
+    public ResponseEntity<ItemToFind> createItemToFind(@Valid @RequestBody ItemToFind itemtofind,
+            @PathVariable Long userID) {
         ItemToFind result = itemToFindService.saveItemToFind(itemtofind, userID);
         return ResponseEntity.ok().body(result);
     }
@@ -69,10 +69,18 @@ public class ItemToFindController {
      * 依使用者查詢
      */
 
-    @GetMapping("/itemtofinds/user")
-    public ResponseEntity<Collection<ItemToFind>> getItemToFindsByUser(@RequestBody User user) {
-        Collection<ItemToFind> result = itemToFindService.findByUser(user);
+    @GetMapping("/itemtofinds/user/{userID}")
+    public ResponseEntity<Collection<ItemToFind>> getItemToFindsByUser(@PathVariable Long userID) {
+        Collection<ItemToFind> result = itemToFindService.findByUser(userID);
         return ResponseEntity.ok().body(result);
     }
 
+    /*
+     * 依type查詢
+     */
+    @GetMapping("/itemtofinds/type/{type}")
+    public ResponseEntity<Collection<ItemToFind>> getItemToFindsByType(@PathVariable String type) {
+        Collection<ItemToFind> result = itemToFindService.findByType(type);
+        return ResponseEntity.ok().body(result);
+    }
 }

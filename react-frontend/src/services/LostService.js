@@ -25,6 +25,15 @@ class LostService {
       throw error;
     }
   }
+  async getLostItemsByType(type) {
+    try {
+      const response = await axios.get(`${LOST_REST_API_URL}/type/${type}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error searching lost items by type:", error);
+      throw error;
+    }
+  }
 
   async createLost(lostItem) {
     try {

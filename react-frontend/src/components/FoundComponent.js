@@ -11,6 +11,10 @@ const FoundComponent = () => {
   const [showModal, setShowModal] = useState(false);
   const [isAnimated, setIsAnimated] = useState(false); // 新增状态
 
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
   useEffect(() => {
     setIsAnimated(true); // 设置动画状态为true，使元素滑入
     fetchFoundItems();
@@ -47,6 +51,24 @@ const FoundComponent = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
+    setShowCategoryModal(false);
+  };
+
+  const handleShowCategoryModal = () => {
+    setShowModal(false);
+    setShowCategoryModal(true);
+  };
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+    FoundService.getFoundItemsByType(category)
+      .then((data) => {
+        setFounds(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching found items by type:", error);
+      });
+    handleCloseModal();
   };
 
   const styles = {
@@ -255,6 +277,7 @@ const FoundComponent = () => {
                 </Button>
                 <Button
                   variant="primary"
+                  onClick={handleShowCategoryModal}
                   style={{
                     borderRadius: "40px",
                     borderWidth: "4px",
@@ -281,6 +304,157 @@ const FoundComponent = () => {
                 >
                   CATEGORIES
                 </Button>
+              </div>
+            </Modal.Body>
+          </Modal>
+          <Modal
+            show={showCategoryModal}
+            onHide={handleCloseModal}
+            dialogClassName="modal-dialog-centered modal-lg"
+          >
+            <Modal.Body
+              style={{
+                backgroundColor: "#FFFFF0",
+                borderRadius: "40px",
+                height: "400px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <div style={{ display: "flex", marginBottom: "20px" }}>
+                  <Button
+                    variant="secondary"
+                    onClick={() => handleCategoryClick("Document")}
+                    style={{
+                      borderRadius: "40px",
+                      borderWidth: "4px",
+                      borderColor: "black",
+                      width: "300px",
+                      height: "100px",
+                      marginBottom: "20px",
+                      marginRight: "40px",
+                      fontFamily: "'Lalezar', cursive",
+                      fontSize: "50px",
+                      color: "black",
+                      backgroundColor: "#FFA800",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      boxShadow: "10px 10px 0px rgba(0, 0, 0, 0.2)",
+                      transition: "transform 0.1s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.transform =
+                        "translateY(10px) translateX(10px)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = "none";
+                    }}
+                  >
+                    Document
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() => handleCategoryClick("Clothes")}
+                    style={{
+                      borderRadius: "40px",
+                      borderWidth: "4px",
+                      borderColor: "black",
+                      width: "300px",
+                      height: "100px",
+                      marginBottom: "20px",
+                      fontFamily: "'Lalezar', cursive",
+                      fontSize: "50px",
+                      color: "black",
+                      backgroundColor: "#D4BBFF",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      boxShadow: "10px 10px 0px rgba(0, 0, 0, 0.2)",
+                      transition: "transform 0.1s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.transform =
+                        "translateY(10px) translateX(10px)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = "none";
+                    }}
+                  >
+                    Clothes
+                  </Button>
+                </div>
+                <div style={{ display: "flex" }}>
+                  <Button
+                    variant="secondary"
+                    onClick={() => handleCategoryClick("Accessories")}
+                    style={{
+                      borderRadius: "40px",
+                      borderWidth: "4px",
+                      borderColor: "black",
+                      width: "300px",
+                      height: "100px",
+                      marginBottom: "0px",
+                      marginRight: "40px",
+                      fontFamily: "'Lalezar', cursive",
+                      fontSize: "50px",
+                      color: "black",
+                      backgroundColor: "#80D1FF",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      boxShadow: "10px 10px 0px rgba(0, 0, 0, 0.2)",
+                      transition: "transform 0.1s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.transform =
+                        "translateY(10px) translateX(10px)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = "none";
+                    }}
+                  >
+                    Accessories
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() => handleCategoryClick("Others")}
+                    style={{
+                      borderRadius: "40px",
+                      borderWidth: "4px",
+                      borderColor: "black",
+                      width: "300px",
+                      height: "100px",
+                      marginBottom: "0px",
+                      fontFamily: "'Lalezar', cursive",
+                      fontSize: "50px",
+                      color: "black",
+                      backgroundColor: "#FDDA0D",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      boxShadow: "10px 10px 0px rgba(0, 0, 0, 0.2)",
+                      transition: "transform 0.1s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.transform =
+                        "translateY(10px) translateX(10px)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = "none";
+                    }}
+                  >
+                    Others
+                  </Button>
+                </div>
               </div>
             </Modal.Body>
           </Modal>

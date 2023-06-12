@@ -20,7 +20,6 @@ import com.example.dbmsproject.backend.Service.ItemOnRoadService;
 import jakarta.validation.Valid;
 
 import com.example.dbmsproject.backend.Model.ItemOnRoad;
-import com.example.dbmsproject.backend.Model.User;
 
 @RestController
 @RequestMapping("/api/itemonroads")
@@ -33,9 +32,10 @@ public class ItemOnRoadController {
     // C
 
     @PostMapping("/{userID}")
-    public ResponseEntity<ItemOnRoad> createItemOnRoad(@Valid @RequestBody ItemOnRoad itemOnRoad,@PathVariable Long userID) {
+    public ResponseEntity<ItemOnRoad> createItemOnRoad(@Valid @RequestBody ItemOnRoad itemOnRoad,
+            @PathVariable Long userID) {
         itemOnRoad.setUser(null);
-        ItemOnRoad result = itemOnRoadService.saveItemOnRoad(itemOnRoad,userID);
+        ItemOnRoad result = itemOnRoadService.saveItemOnRoad(itemOnRoad, userID);
         return ResponseEntity.ok().body(result);
     }
     // R
@@ -44,8 +44,9 @@ public class ItemOnRoadController {
      */
 
     @GetMapping("")
-    public Collection<ItemOnRoad> itemonroads() {
-        return itemOnRoadService.getItemOnRoads();
+    public ResponseEntity<Collection<ItemOnRoad>> itemonroads() {
+        Collection<ItemOnRoad> result = itemOnRoadService.getItemOnRoads();
+        return ResponseEntity.ok().body(result);
     }
     /*
      * 依id查詢
@@ -60,9 +61,11 @@ public class ItemOnRoadController {
      * 依使用者查詢
      */
 
-    @GetMapping("/user")
-    public Collection<ItemOnRoad> getItemOnRoadsByUser(@RequestBody User user) {
-        return itemOnRoadService.findByUser(user);
+    @GetMapping("/user/{userID}")
+    public ResponseEntity<Collection<ItemOnRoad>> getItemOnRoadsByUser(@PathVariable Long userID) {
+        Collection<ItemOnRoad> result = itemOnRoadService.findByUser(userID);
+        return ResponseEntity.ok().body(result);
+
     }
 
     /*
@@ -70,9 +73,19 @@ public class ItemOnRoadController {
      */
 
     @GetMapping("/name/{name}")
-    public Collection<ItemOnRoad> getItemOnRoadByName(@PathVariable String name) {
-        Collection<ItemOnRoad> item = itemOnRoadService.findByName(name);
-        return item;
+    public ResponseEntity<Collection<ItemOnRoad>> getItemOnRoadByName(@PathVariable String name) {
+        Collection<ItemOnRoad> result = itemOnRoadService.findByName(name);
+        return ResponseEntity.ok().body(result);
+    }
+
+    /*
+     * 依type查詢
+     */
+
+    @GetMapping("/type/{type}")
+    public ResponseEntity<Collection<ItemOnRoad>> getItemOnRoadByType(@PathVariable String type) {
+        Collection<ItemOnRoad> result = itemOnRoadService.findByType(type);
+        return ResponseEntity.ok().body(result);
     }
 
     // U

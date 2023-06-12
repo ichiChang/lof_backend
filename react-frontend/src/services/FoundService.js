@@ -12,6 +12,15 @@ class FoundService {
       throw error;
     }
   }
+  async getFoundItemsByType(type) {
+    try {
+      const response = await axios.get(`${FOUND_REST_API_URL}/type/${type}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error searching found items by type:", error);
+      throw error;
+    }
+  }
   async searchFoundItems(searchTerm) {
     try {
       const response = await axios.get(
