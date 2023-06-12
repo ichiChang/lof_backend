@@ -45,11 +45,12 @@ const WelcomePage = () => {
             backgroundSize: "800px 700px",
             position: "absolute",
             top: "15%",
-            right: animate ? "50%" : "100%",
+            right: "50%",
+            opacity: animate ? 1 : 0,
+            transform: animate ? "scale(1)" : "scale(0)",
+            transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
             width: "500px",
             height: "500px",
-            transform: "scaleX(-1)",
-            transition: "right 1s ease-in-out",
           }}
         />
         <div
@@ -60,10 +61,12 @@ const WelcomePage = () => {
             backgroundSize: "1500px 750px",
             position: "absolute",
             top: "35%",
-            right: animate ? "20%" : "100%",
+            right: "20%",
+            opacity: animate ? 1 : 0,
+            transform: animate ? "scale(1)" : "scale(0)",
+            transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
             width: "1000px",
             height: "300px",
-            transition: "right 1s ease-in-out",
           }}
         />
         <div
@@ -74,10 +77,12 @@ const WelcomePage = () => {
             backgroundSize: "500px 500px",
             position: "absolute",
             top: "18%",
-            right: animate ? "19%" : "100%",
+            right: "19%",
+            opacity: animate ? 1 : 0,
+            transform: animate ? "scale(1)" : "scale(0)",
+            transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
             width: "800px",
             height: "500px",
-            transition: "right 1s ease-in-out",
           }}
         />
 
@@ -89,10 +94,12 @@ const WelcomePage = () => {
             backgroundSize: "500px 500px",
             position: "absolute",
             top: "113px",
-            right: animate ? "0" : "100%",
+            right: 0,
+            opacity: animate ? 1 : 0,
+            transform: animate ? "scale(1)" : "scale(0)",
+            transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
             width: "200px",
             height: "200px",
-            transition: "right 1s ease-in-out",
           }}
         />
         <div
@@ -102,11 +109,13 @@ const WelcomePage = () => {
             backgroundPosition: "50% 20%",
             backgroundSize: "3500px 1500px",
             position: "absolute",
-            bottom: "0",
-            right: animate ? "0" : "100%",
+            bottom: 0,
+            right: 0,
+            opacity: animate ? 1 : 0,
+            transform: animate ? "scale(1)" : "scale(0)",
+            transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
             width: "800px",
             height: "250px",
-            transition: "right 1s ease-in-out",
           }}
         />
         <div
@@ -118,9 +127,11 @@ const WelcomePage = () => {
             position: "absolute",
             bottom: "5%",
             right: "21%",
+            opacity: animate ? 1 : 0,
+            transform: animate ? "scale(1)" : "scale(0)",
+            transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
             width: "300px",
             height: "300px",
-            transition: "right 1s ease-in-out",
           }}
         />
 
@@ -131,11 +142,13 @@ const WelcomePage = () => {
             backgroundPosition: "center",
             backgroundSize: "300px 300px",
             position: "absolute",
-            bottom: "0",
+            bottom: 0,
             left: "10px",
+            opacity: animate ? 1 : 0,
+            transform: animate ? "scale(1)" : "scale(0)",
+            transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
             width: "150px",
             height: "120px",
-            transition: "right 1s ease-in-out",
           }}
         />
       </div>
@@ -147,10 +160,12 @@ const WelcomePage = () => {
           backgroundSize: "500px 450px",
           position: "absolute",
           top: "45%",
-          right: animate ? "30%" : "100%",
+          right: "30%",
+          opacity: animate ? 1 : 0,
+          transform: animate ? "scale(1)" : "scale(0)",
+          transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
           width: "1000px",
           height: "300px",
-          transition: "right 1s ease-in-out",
         }}
       />
       <Link to="/second">
@@ -162,11 +177,13 @@ const WelcomePage = () => {
             backgroundSize: "900px 700px",
             position: "absolute",
             top: "45%",
-            right: animate ? "20%" : "100%",
+            right: "20%",
+            opacity: animate ? 1 : 0,
+            transform: animate ? "scale(1)" : "scale(0)",
+            transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
             width: "500px",
             height: "400px",
             cursor: "pointer",
-            transition: "right 1s ease-in-out",
           }}
         />
         <div
@@ -177,11 +194,12 @@ const WelcomePage = () => {
             backgroundSize: "500px 300px",
             position: "absolute",
             top: "46.5%",
-            right: animate ? "22%" : "100%",
+            right: "22%",
+            opacity: animate ? 1 : 0,
+            transform: animate ? "scale(1)" : "scale(0)",
+            transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
             width: "300px",
             height: "300px",
-            transform: animate ? "rotate(10deg)" : "rotate(0deg)",
-            transition: "right 1s ease-in-out, transform 1s ease-in-out",
           }}
         />
         <div
@@ -192,11 +210,12 @@ const WelcomePage = () => {
             backgroundSize: "150px 150px",
             position: "absolute",
             top: "60%",
-            right: animate ? "41%" : "100%",
+            right: "41%",
+            opacity: animate ? 1 : 0,
+            transform: animate ? "scale(1)" : "scale(0)",
+            transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
             width: "150px",
             height: "150px",
-            transform: animate ? "rotate(-20deg)" : "rotate(0deg)",
-            transition: "right 1s ease-in-out, transform 1s ease-in-out",
           }}
         />
       </Link>

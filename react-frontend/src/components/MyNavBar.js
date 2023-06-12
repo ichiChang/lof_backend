@@ -60,7 +60,7 @@ const MyNavbar = () => {
                 fontFamily: "Microsoft YaHei",
                 fontSize: "24px",
                 fontWeight: "bold",
-                marginLeft: "10px",
+                marginLeft: "0px",
               }}
             >
               政大遺失物平台
@@ -75,7 +75,7 @@ const MyNavbar = () => {
                 fontFamily: "LakkiReddy",
                 fontSize: "20px",
                 fontWeight: "bold",
-                marginLeft: "100px",
+                marginLeft: "50px",
                 marginTop: "10px",
               }}
             >
@@ -98,13 +98,15 @@ const MyNavbar = () => {
               Found List
             </Link>
           </li>
+        </ul>
+        <ul className="navbar-nav ml-auto">
           <li className="nav-item">
             <Link
               to="/login"
               className="nav-link"
               style={{
                 color: "black",
-                marginLeft: "835px",
+                marginRight: "15px",
                 marginTop: "2.5px",
               }}
             >

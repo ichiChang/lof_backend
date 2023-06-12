@@ -14,6 +14,7 @@ import com.example.dbmsproject.backend.Model.Place;
 import com.example.dbmsproject.backend.Model.User;
 import com.example.dbmsproject.backend.Repository.ItemOnRoadRepository;
 import com.example.dbmsproject.backend.Service.ItemOnRoadService;
+import com.example.dbmsproject.backend.Service.UserService;
 
 @Service
 public class ItemOnRoadServiceImpl implements ItemOnRoadService {
@@ -21,14 +22,19 @@ public class ItemOnRoadServiceImpl implements ItemOnRoadService {
     @Autowired
     ItemOnRoadRepository itemOnRoadRepository;
 
+    @Autowired
+    UserService userService;
+
     @Override
-    public ItemOnRoad saveItemOnRoad(ItemOnRoad itemOnRoad) {
+    public ItemOnRoad saveItemOnRoad(ItemOnRoad itemOnRoad, Long userID) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         df.setTimeZone(TimeZone.getTimeZone("Asia/Taipei"));
         String date = df.format(new Date());
         String newpick = itemOnRoad.getPick_up_time().substring(0, 10);
         itemOnRoad.setPick_up_time(newpick);
         itemOnRoad.setPostTime(date);
+        User user = userService.findById(userID).get();
+        itemOnRoad.setUser(user);
         itemOnRoadRepository.save(itemOnRoad);
         return itemOnRoad;
     }

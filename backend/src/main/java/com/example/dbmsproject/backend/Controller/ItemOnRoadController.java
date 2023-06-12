@@ -32,10 +32,10 @@ public class ItemOnRoadController {
 
     // C
 
-    @PostMapping("")
-    public ResponseEntity<ItemOnRoad> createItemOnRoad(@Valid @RequestBody ItemOnRoad itemOnRoad) {
-        System.out.println(itemOnRoad.getPick_up_time());
-        ItemOnRoad result = itemOnRoadService.saveItemOnRoad(itemOnRoad);
+    @PostMapping("/{userID}")
+    public ResponseEntity<ItemOnRoad> createItemOnRoad(@Valid @RequestBody ItemOnRoad itemOnRoad,@PathVariable Long userID) {
+        itemOnRoad.setUser(null);
+        ItemOnRoad result = itemOnRoadService.saveItemOnRoad(itemOnRoad,userID);
         return ResponseEntity.ok().body(result);
     }
     // R

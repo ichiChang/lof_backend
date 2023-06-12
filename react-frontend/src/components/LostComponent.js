@@ -93,6 +93,8 @@ const LostComponent = () => {
       alignItems: "center",
     },
     searchInput: {
+      fontFamily: "'Lalezar', cursive",
+      fontSize: "18px",
       borderRadius: "30px",
       padding: "10px",
       width: "700px",

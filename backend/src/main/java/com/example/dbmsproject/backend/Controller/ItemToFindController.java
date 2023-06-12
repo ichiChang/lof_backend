@@ -29,9 +29,9 @@ public class ItemToFindController {
 
     // C
 
-    @PostMapping("/itemtofinds")
-    public ResponseEntity<ItemToFind> createItemToFind(@Valid @RequestBody ItemToFind itemtofind) {
-        ItemToFind result = itemToFindService.saveItemToFind(itemtofind);
+    @PostMapping("/itemtofinds/{userID}")
+    public ResponseEntity<ItemToFind> createItemToFind(@Valid @RequestBody ItemToFind itemtofind, @PathVariable Long userID) {
+        ItemToFind result = itemToFindService.saveItemToFind(itemtofind, userID);
         return ResponseEntity.ok().body(result);
     }
 

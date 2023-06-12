@@ -4,10 +4,11 @@ import axios from "axios";
 import { Button, Modal, Toast } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
-import ReactDatetime from "react-datetime";
-import "react-datetime/css/react-datetime.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import Plus from "../images/plus.svg";
 
 const CreateLostItem = () => {
@@ -22,12 +23,7 @@ const CreateLostItem = () => {
   const [itemType, setItemType] = useState("Document");
   const [itemPhoto, setItemPhoto] = useState("");
   const [itemRemark, setItemRemark] = useState("");
-  const [pickUpTime, setPickUpTime] = useState(null);
-  const [userName, setUserName] = useState("");
-  const [userPhone, setUserPhone] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userLineId, setUserLineId] = useState("");
-  const [userFbUrl, setUserFbUrl] = useState("");
+  const [pickUpTime, setPickUpTime] = useState("");
   const [pickUpPlaceName, setPickUpPlaceName] = useState("");
   const [pickUpPlaceFloor, setPickUpPlaceFloor] = useState("");
   const [pickUpPlaceClassroom, setPickUpPlaceClassroom] = useState("");
@@ -36,8 +32,9 @@ const CreateLostItem = () => {
   const [nowPlaceClassroom, setNowPlaceClassroom] = useState("");
 
   const handlePickUpTimeChange = (date) => {
-    const back = JSON.stringify(date);
-    setPickUpTime(back.substring(0, 11));
+    const formattedDate = date.toISOString().substring(0, 10); // 将日期转换为yyyy-mm-dd格式的字符串
+    setPickUpTime(formattedDate);
+    console.log(pickUpTime);
   };
 
   const handleSubmit = async (e) => {
@@ -53,14 +50,14 @@ const CreateLostItem = () => {
       postTime: "postTime",
       user: {
         uid: 0,
-        name: userName,
+        name: "userName",
         createDate: "",
         contact: {
           cid: 0,
-          phone_number: userPhone,
-          email: userEmail,
-          line_id: userLineId,
-          fb_url: userFbUrl,
+          phone_number: "0900000000",
+          email: "0@gmail.com",
+          line_id: "userLineId",
+          fb_url: "userFbUrl",
         },
       },
       pickUpPlace: {
@@ -78,8 +75,9 @@ const CreateLostItem = () => {
     };
 
     try {
+      const userID = localStorage.getItem("userId"); // 从localStorage中获取userID的值
       const response = await axios.post(
-        "http://localhost:8080/api/itemonroads",
+        `http://localhost:8080/api/itemonroads/${userID}`, // 使用userID作为路径变量
         itemData
       );
       console.log("Item created:", response.data);
@@ -93,11 +91,6 @@ const CreateLostItem = () => {
       setItemPhoto("");
       setItemRemark("");
       setPickUpTime("");
-      setUserName("");
-      setUserPhone("");
-      setUserEmail("");
-      setUserLineId("");
-      setUserFbUrl("");
       setPickUpPlaceName("");
       setPickUpPlaceFloor("");
       setPickUpPlaceClassroom("");
@@ -222,100 +215,37 @@ const CreateLostItem = () => {
                       onChange={(e) => setItemRemark(e.target.value)}
                     />
                   </div>
-                  <div
-                    className="col"
-                    style={{ fontFamily: "Oswald, sans-serif" }}
-                  >
-                    <label htmlFor="pickUpTime">Pick Up Time</label>
-                    <ReactDatetime
+                  <div className="col">
+                    <label
+                      htmlFor="pickUpTime"
+                      style={{ fontFamily: "Oswald, sans-serif" }}
+                    >
+                      Pick Up Time
+                    </label>
+                    <DatePicker
                       id="pickUpTime"
-                      value={pickUpTime}
+                      selected={pickUpTime ? new Date(pickUpTime) : null}
                       onChange={handlePickUpTimeChange}
-                      inputProps={{
-                        placeholder: "Pick Up Time",
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div class="row mt-3">
-                  <div class="col">
-                    <label
-                      htmlFor="userName"
-                      style={{ fontFamily: "Oswald, sans-serif" }}
-                    >
-                      User Name
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="userName"
-                      value={userName}
-                      onChange={(e) => setUserName(e.target.value)}
-                    />
-                  </div>
-                  <div class="col">
-                    <label
-                      htmlFor="userPhone"
-                      style={{ fontFamily: "Oswald, sans-serif" }}
-                    >
-                      User Phone
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="userPhone"
-                      value={userPhone}
-                      onChange={(e) => setUserPhone(e.target.value)}
-                    />
-                  </div>
-                  <div class="col">
-                    <label
-                      htmlFor="userEmail"
-                      style={{ fontFamily: "Oswald, sans-serif" }}
-                    >
-                      User Email
-                    </label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="userEmail"
-                      placeholder="name@example.com"
-                      value={userEmail}
-                      onChange={(e) => setUserEmail(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div class="row mt-3">
-                  <div class="col">
-                    <label
-                      htmlFor="userLineId"
-                      style={{ fontFamily: "Oswald, sans-serif" }}
-                    >
-                      User Line ID
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="userLineId"
-                      value={userLineId}
-                      onChange={(e) => setUserLineId(e.target.value)}
-                    />
-                  </div>
-                  <div class="col">
-                    <label
-                      htmlFor="userFbUrl"
-                      style={{ fontFamily: "Oswald, sans-serif" }}
-                    >
-                      User Facebook URL
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="userFbUrl"
-                      value={userFbUrl}
-                      onChange={(e) => setUserFbUrl(e.target.value)}
+                      placeholderText="Pick Up Time"
+                      showTimeSelect
+                      timeIntervals={30}
+                      dateFormat="yyyy-MM-dd"
+                      minTime={new Date().setHours(0, 0)}
+                      maxTime={new Date().setHours(23, 45)}
+                      timeCaption="Time"
+                      customInput={
+                        <div className="input-group">
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={pickUpTime}
+                            readOnly
+                          />
+                          <span className="input-group-text">
+                            <FontAwesomeIcon icon={faCalendarAlt} />
+                          </span>
+                        </div>
+                      }
                     />
                   </div>
                 </div>

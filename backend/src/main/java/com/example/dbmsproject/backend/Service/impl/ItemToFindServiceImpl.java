@@ -1,7 +1,10 @@
 package com.example.dbmsproject.backend.Service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Optional;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,7 @@ import com.example.dbmsproject.backend.Model.Place;
 import com.example.dbmsproject.backend.Model.User;
 import com.example.dbmsproject.backend.Repository.ItemToFindRepository;
 import com.example.dbmsproject.backend.Service.ItemToFindService;
+import com.example.dbmsproject.backend.Service.UserService;
 
 @Service
 public class ItemToFindServiceImpl implements ItemToFindService {
@@ -18,8 +22,19 @@ public class ItemToFindServiceImpl implements ItemToFindService {
     @Autowired
     ItemToFindRepository itemToFindRepository;
 
+    @Autowired
+    UserService userService;
+
     @Override
-    public ItemToFind saveItemToFind(ItemToFind itemToFind) {
+    public ItemToFind saveItemToFind(ItemToFind itemToFind, Long userID) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("Asia/Taipei"));
+        String date = df.format(new Date());
+        String newLastSeen = itemToFind.getLastSeenTime().substring(0, 10);
+        itemToFind.setLastSeenTime(newLastSeen);
+        itemToFind.setPostTime(date);
+        User user = userService.findById(userID).get();
+        itemToFind.setUser(user);
         itemToFindRepository.save(itemToFind);
         return itemToFind;
     }

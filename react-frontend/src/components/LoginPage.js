@@ -88,13 +88,15 @@ const LoginPage = () => {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundSize: "100% 100%",
-          minHeight: "calc(100vh - 232px)",
+          minHeight: "calc(100vh - 170px)",
           paddingTop: "30px",
           paddingBottom: "30px",
           boxSizing: "content-box",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          opacity: animate ? 1 : 0,
+          transition: "opacity 1s ease-in-out",
         }}
       >
         <div

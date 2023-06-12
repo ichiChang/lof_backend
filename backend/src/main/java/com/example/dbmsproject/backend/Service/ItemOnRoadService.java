@@ -7,7 +7,7 @@ import com.example.dbmsproject.backend.Model.ItemOnRoad;
 import com.example.dbmsproject.backend.Model.User;
 
 public interface ItemOnRoadService {
-    public ItemOnRoad saveItemOnRoad(ItemOnRoad itemOnRoad);
+    public ItemOnRoad saveItemOnRoad(ItemOnRoad itemOnRoad, Long userID);
 
     public Optional<ItemOnRoad> findById(Long id);
 

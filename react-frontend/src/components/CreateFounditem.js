@@ -2,8 +2,8 @@ import React, { useState, useRef } from "react";
 import axios from "axios";
 import { Button, Modal, Toast } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
@@ -21,24 +21,23 @@ const CreateFoundItem = () => {
   const [itemType, setItemType] = useState("Document");
   const [itemPhoto, setItemPhoto] = useState("");
   const [itemRemark, setItemRemark] = useState("");
-  const [itemLastSeenTime, setItemLastSeenTime] = useState(null);
-  const [userName, setUserName] = useState("");
-  const [userPhone, setUserPhone] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userLineId, setUserLineId] = useState("");
-  const [userFbUrl, setUserFbUrl] = useState("");
+  const [lastSeenTime, setLastSeenTime] = useState("");
   const [lastSeenPlaceName, setLastSeenPlaceName] = useState("");
   const [lastSeenPlaceFloor, setLastSeenPlaceFloor] = useState("");
   const [lastSeenPlaceClassroom, setLastSeenPlaceClassroom] = useState("");
-  const handleLastSeenTime = (date) => {
-    setItemLastSeenTime(date);
+
+  const handleLastSeenTimeChange = (date) => {
+    const formattedDate = date.toISOString().substring(0, 10); // 将日期转换为yyyy-mm-dd格式的字符串
+    setLastSeenTime(formattedDate);
+    console.log(lastSeenTime);
   };
+
   const CustomDatePickerInput = ({ value, onClick }) => (
     <div className="input-group">
       <input
         type="text"
         className="form-control"
-        value={value}
+        value={lastSeenTime}
         onClick={onClick}
         readOnly
       />
@@ -63,18 +62,18 @@ const CreateFoundItem = () => {
       type: itemType,
       photo: itemPhoto,
       remark: itemRemark,
-      pick_up_time: itemLastSeenTime,
+      lastSeenTime: lastSeenTime,
       postTime: "postTime",
       user: {
         uid: 0,
-        name: userName,
+        name: "userName",
         createDate: "",
         contact: {
           cid: 0,
-          phone_number: userPhone,
-          email: userEmail,
-          line_id: userLineId,
-          fb_url: userFbUrl,
+          phone_number: "0900000000",
+          email: "0@gmail.com",
+          line_id: "",
+          fb_url: "",
         },
       },
       lastSeenPlace: {
@@ -86,8 +85,10 @@ const CreateFoundItem = () => {
     };
 
     try {
+      console.log(itemData);
+      const userID = localStorage.getItem("userId");
       const response = await axios.post(
-        "http://localhost:8080/api/itemtofinds",
+        `http://localhost:8080/api/itemtofinds/${userID}`,
         itemData
       );
       console.log("Item created:", response.data);
@@ -100,12 +101,7 @@ const CreateFoundItem = () => {
       setItemType("");
       setItemPhoto("");
       setItemRemark("");
-      setItemLastSeenTime("");
-      setUserName("");
-      setUserPhone("");
-      setUserEmail("");
-      setUserLineId("");
-      setUserFbUrl("");
+      setLastSeenTime("");
       setLastSeenPlaceName("");
       setLastSeenPlaceFloor("");
       setLastSeenPlaceClassroom("");
@@ -231,95 +227,19 @@ const CreateFoundItem = () => {
                     className="col"
                     style={{ fontFamily: "Oswald, sans-serif" }}
                   >
-                    <label htmlFor="itemLastSeenTime">Last Seen Time</label>
+                    <label htmlFor="lastSeenTime">Last Seen Time</label>
                     <DatePicker
                       id="lastSeenTime"
-                      selected={itemLastSeenTime}
-                      onChange={handleLastSeenTime}
+                      selected={lastSeenTime ? new Date(lastSeenTime) : null}
+                      onChange={handleLastSeenTimeChange}
+                      placeholderText="Pick Up Time"
+                      showTimeSelect
+                      timeIntervals={30}
                       dateFormat="yyyy-MM-dd"
+                      minTime={new Date().setHours(0, 0)}
+                      maxTime={new Date().setHours(23, 45)}
+                      timeCaption="Time"
                       customInput={<CustomDatePickerInput />}
-                    />
-                  </div>
-                </div>
-
-                <div class="row mt-3">
-                  <div class="col">
-                    <label
-                      htmlFor="userName"
-                      style={{ fontFamily: "Oswald, sans-serif" }}
-                    >
-                      User Name
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="userName"
-                      value={userName}
-                      onChange={(e) => setUserName(e.target.value)}
-                    />
-                  </div>
-                  <div class="col">
-                    <label
-                      htmlFor="userPhone"
-                      style={{ fontFamily: "Oswald, sans-serif" }}
-                    >
-                      User Phone
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="userPhone"
-                      value={userPhone}
-                      onChange={(e) => setUserPhone(e.target.value)}
-                    />
-                  </div>
-                  <div class="col">
-                    <label
-                      htmlFor="userEmail"
-                      style={{ fontFamily: "Oswald, sans-serif" }}
-                    >
-                      User Email
-                    </label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="userEmail"
-                      placeholder="name@example.com"
-                      value={userEmail}
-                      onChange={(e) => setUserEmail(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div class="row mt-3">
-                  <div class="col">
-                    <label
-                      htmlFor="userLineId"
-                      style={{ fontFamily: "Oswald, sans-serif" }}
-                    >
-                      User Line ID
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="userLineId"
-                      value={userLineId}
-                      onChange={(e) => setUserLineId(e.target.value)}
-                    />
-                  </div>
-                  <div class="col">
-                    <label
-                      htmlFor="userFbUrl"
-                      style={{ fontFamily: "Oswald, sans-serif" }}
-                    >
-                      User Facebook URL
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="userFbUrl"
-                      value={userFbUrl}
-                      onChange={(e) => setUserFbUrl(e.target.value)}
                     />
                   </div>
                 </div>

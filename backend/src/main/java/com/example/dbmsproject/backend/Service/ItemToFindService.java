@@ -7,7 +7,7 @@ import com.example.dbmsproject.backend.Model.ItemToFind;
 import com.example.dbmsproject.backend.Model.User;
 
 public interface ItemToFindService {
-    public ItemToFind saveItemToFind(ItemToFind itemToFind);
+    public ItemToFind saveItemToFind(ItemToFind itemToFind, Long userID);
 
     public Collection<ItemToFind> getItemToFinds();
 
