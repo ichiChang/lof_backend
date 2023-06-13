@@ -16,6 +16,8 @@ public interface ItemToFindService {
 
     public Collection<ItemToFind> findByType(String type);
 
+    public Collection<ItemToFind> findByPlace(String placeName);
+
     public Optional<ItemToFind> findById(Long id);
 
     public Boolean updateItemToFind(Long id, ItemToFind itemToFind);

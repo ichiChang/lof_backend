@@ -14,6 +14,7 @@ import com.example.dbmsproject.backend.Model.Place;
 import com.example.dbmsproject.backend.Model.User;
 import com.example.dbmsproject.backend.Repository.ItemToFindRepository;
 import com.example.dbmsproject.backend.Service.ItemToFindService;
+import com.example.dbmsproject.backend.Service.PlaceService;
 import com.example.dbmsproject.backend.Service.UserService;
 
 @Service
@@ -24,6 +25,9 @@ public class ItemToFindServiceImpl implements ItemToFindService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    PlaceService placeService;
 
     @Override
     public ItemToFind saveItemToFind(ItemToFind itemToFind, Long userID) {
@@ -96,6 +100,13 @@ public class ItemToFindServiceImpl implements ItemToFindService {
     @Override
     public Collection<ItemToFind> findByType(String type) {
         Collection<ItemToFind> result = itemToFindRepository.findByType(type);
+        return result;
+    }
+
+    @Override
+    public Collection<ItemToFind> findByPlace(String placeName) {
+        Collection<Place> places = placeService.findByName(placeName);
+        Collection<ItemToFind> result = itemToFindRepository.findByLastSeenPlaceIn(places);
         return result;
     }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom"; // Import Link component if not already imported
 import MyNavbar from "./MyNavBar";
 import BG from "../images/SecondPageBG.jpg";
@@ -6,6 +6,9 @@ import Lost from "../images/lost.png";
 import Found from "../images/found.png";
 
 const SecondPage = () => {
+  useEffect(() => {
+    localStorage.setItem("userId", "0");
+  }, []);
   return (
     <div
       style={{

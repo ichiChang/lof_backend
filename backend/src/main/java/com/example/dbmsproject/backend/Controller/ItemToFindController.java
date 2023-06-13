@@ -83,4 +83,13 @@ public class ItemToFindController {
         Collection<ItemToFind> result = itemToFindService.findByType(type);
         return ResponseEntity.ok().body(result);
     }
+
+    /*
+     * 依地點查詢
+     */
+    @GetMapping("/itemtofinds/place/{placeName}")
+    public ResponseEntity<Collection<ItemToFind>> getItemToFindsByPlace(@PathVariable String placeName) {
+        Collection<ItemToFind> result = itemToFindService.findByPlace(placeName);
+        return ResponseEntity.ok().body(result);
+    }
 }

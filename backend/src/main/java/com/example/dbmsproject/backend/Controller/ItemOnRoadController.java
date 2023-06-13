@@ -88,6 +88,16 @@ public class ItemOnRoadController {
         return ResponseEntity.ok().body(result);
     }
 
+    /*
+     * 依地點查詢
+     */
+
+    @GetMapping("/place/{placeName}")
+    public ResponseEntity<Collection<ItemOnRoad>> getItemOnRoadByPlace(@PathVariable String placeName) {
+        Collection<ItemOnRoad> result = itemOnRoadService.findByPlace(placeName);
+        return ResponseEntity.ok().body(result);
+    }
+
     // U
 
     @PutMapping("/{id}")

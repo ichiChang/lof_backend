@@ -16,6 +16,8 @@ public interface ItemOnRoadService {
 
     public Collection<ItemOnRoad> findByName(String name);
 
+    public Collection<ItemOnRoad> findByPlace(String placeName);
+
     public Collection<ItemOnRoad> getItemOnRoads();
 
     public Boolean updateItemOnRoad(Long id, ItemOnRoad itemOnRoad);

@@ -35,6 +35,18 @@ class LostService {
     }
   }
 
+  async getLostItemsByPlace(placeName) {
+    try {
+      const response = await axios.get(
+        `${LOST_REST_API_URL}/place/${placeName}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error searching lost items by place:", error);
+      throw error;
+    }
+  }
+
   async createLost(lostItem) {
     try {
       const response = await axios.post(LOST_REST_API_URL, lostItem, {

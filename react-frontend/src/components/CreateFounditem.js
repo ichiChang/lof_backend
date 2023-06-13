@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
-import { Button, Modal, Toast } from "react-bootstrap";
+import { Button, Modal, Toast, ToastContainer } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -13,9 +13,19 @@ const CreateFoundItem = () => {
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false); // State to control the visibility of the toast
   const toastRef = useRef(null); // Reference to the Bootstrap toast
+  const [error, setError] = useState("");
 
   const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
+  const handleShow = () => {
+    const userId = localStorage.getItem("userId");
+    if (userId === "0") {
+      // Show the Bootstrap toast with the "danger" variant
+      setError("Please Login First!!");
+    } else {
+      // Open the modal
+      setShowModal(true);
+    }
+  };
 
   const [itemName, setItemName] = useState("");
   const [itemType, setItemType] = useState("Document");
@@ -310,26 +320,50 @@ const CreateFoundItem = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <Toast
-        show={showToast}
-        onClose={handleToastClose}
-        ref={toastRef}
-        delay={3000}
-        autohide
-        style={{
-          fontSize: "24px",
-          position: "fixed",
-          bottom: "20px",
-          right: "20px",
-          minWidth: "300px",
-          fontFamily: "'Lalezar', cursive",
-        }}
-      >
-        <Toast.Header>
-          <strong className="me-auto">Success!</strong>
-        </Toast.Header>
-        <Toast.Body>Item posted successfully!</Toast.Body>
-      </Toast>
+      <ToastContainer position="top-end">
+        <Toast
+          show={showToast}
+          onClose={handleToastClose}
+          ref={toastRef}
+          delay={3000}
+          autohide
+          style={{
+            fontSize: "24px",
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            minWidth: "300px",
+            fontFamily: "'Lalezar', cursive",
+          }}
+        >
+          <Toast.Header>
+            <strong className="me-auto">Success!</strong>
+          </Toast.Header>
+          <Toast.Body>Item posted successfully!</Toast.Body>
+        </Toast>
+        <Toast
+          bg="danger"
+          show={!!error}
+          onClose={() => setError("")}
+          delay={5000}
+          autohide
+          style={{
+            fontSize: "24px",
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            minWidth: "300px",
+            fontFamily: "'Lalezar', cursive",
+          }}
+        >
+          <Toast.Header>
+            <span className="me-auto" style={{ color: "black" }}>
+              Unauthorized access
+            </span>
+          </Toast.Header>
+          <Toast.Body>{error}</Toast.Body>
+        </Toast>
+      </ToastContainer>
     </div>
   );
 };

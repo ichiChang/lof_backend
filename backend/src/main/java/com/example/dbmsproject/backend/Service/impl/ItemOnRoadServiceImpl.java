@@ -14,6 +14,7 @@ import com.example.dbmsproject.backend.Model.Place;
 import com.example.dbmsproject.backend.Model.User;
 import com.example.dbmsproject.backend.Repository.ItemOnRoadRepository;
 import com.example.dbmsproject.backend.Service.ItemOnRoadService;
+import com.example.dbmsproject.backend.Service.PlaceService;
 import com.example.dbmsproject.backend.Service.UserService;
 
 @Service
@@ -24,6 +25,9 @@ public class ItemOnRoadServiceImpl implements ItemOnRoadService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    PlaceService placeService;
 
     @Override
     public ItemOnRoad saveItemOnRoad(ItemOnRoad itemOnRoad, Long userID) {
@@ -98,6 +102,14 @@ public class ItemOnRoadServiceImpl implements ItemOnRoadService {
     public Collection<ItemOnRoad> findByType(String type) {
         Collection<ItemOnRoad> result = itemOnRoadRepository.findByType(type);
         return result;
+    }
+
+    @Override
+    public Collection<ItemOnRoad> findByPlace(String placeName) {
+        Collection<Place> places = placeService.findByName(placeName);
+        Collection<ItemOnRoad> result = itemOnRoadRepository.findByPickUpPlaceIn(places);
+        return result;
+
     }
 
 }

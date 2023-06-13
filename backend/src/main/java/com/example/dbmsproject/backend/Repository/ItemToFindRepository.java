@@ -16,7 +16,7 @@ public interface ItemToFindRepository extends JpaRepository<ItemToFind, Long> {
 
     List<ItemToFind> findByNameContaining(String name);
 
-    Collection<ItemToFind> findByLastSeenPlace(Place lastSeenPlace);
+    Collection<ItemToFind> findByLastSeenPlaceIn(Collection<Place> lastSeenPlaces);
 
     Collection<ItemToFind> findByName(String name);
 }
