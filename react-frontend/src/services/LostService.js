@@ -34,7 +34,6 @@ class LostService {
       throw error;
     }
   }
-
   async getLostItemsByPlace(placeName) {
     try {
       const response = await axios.get(

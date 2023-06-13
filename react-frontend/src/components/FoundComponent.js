@@ -1,9 +1,12 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import FoundService from "../services/FoundService";
 import MyNavbar from "./MyNavBar";
 import CreateFoundItem from "./CreateFounditem";
 import More from "../images/more.png";
 import { Modal, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const FoundComponent = () => {
   const [founds, setFounds] = useState([]);
@@ -12,8 +15,9 @@ const FoundComponent = () => {
   const [isAnimated, setIsAnimated] = useState(false); // 新增状态
 
   const [showCategoryModal, setShowCategoryModal] = useState(false);
-  // eslint-disable-next-line no-unused-vars
+  const [showLocationModal, setShowLocationModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedPlace, setSelectedPlace] = useState("");
 
   useEffect(() => {
     setIsAnimated(true); // 设置动画状态为true，使元素滑入
@@ -52,11 +56,17 @@ const FoundComponent = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setShowCategoryModal(false);
+    setShowLocationModal(false);
   };
 
   const handleShowCategoryModal = () => {
     setShowModal(false);
     setShowCategoryModal(true);
+  };
+
+  const handleShowLocationModal = () => {
+    setShowModal(false);
+    setShowLocationModal(true);
   };
 
   const handleCategoryClick = (category) => {
@@ -67,6 +77,17 @@ const FoundComponent = () => {
       })
       .catch((error) => {
         console.error("Error fetching found items by type:", error);
+      });
+    handleCloseModal();
+  };
+
+  const handleLocationSearch = () => {
+    FoundService.getFoundItemsByPlace(selectedPlace)
+      .then((data) => {
+        setFounds(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching lost items by place:", error);
       });
     handleCloseModal();
   };
@@ -145,6 +166,24 @@ const FoundComponent = () => {
       border: "solid",
       borderWidth: "2px",
       zIndex: 0,
+    },
+    locationModalInput: {
+      fontFamily: "Microsoft YaHei",
+      fontWeight: "bold",
+      fontSize: "20px",
+      borderRadius: "30px",
+      padding: "10px",
+      width: "400px",
+      height: "50px",
+      marginBottom: "30px",
+      border: "solid",
+      position: "relative",
+      borderWidth: "2px",
+      textAlign: "center",
+    },
+    locationHeading: {
+      fontFamily: "'Lalezar', cursive",
+      fontSize: "28px",
     },
     animateContainer: {
       opacity: 0, // 默认隐藏元素
@@ -247,7 +286,7 @@ const FoundComponent = () => {
               >
                 <Button
                   variant="secondary"
-                  onClick={handleCloseModal}
+                  onClick={handleShowLocationModal}
                   style={{
                     borderRadius: "40px",
                     borderWidth: "4px",
@@ -454,6 +493,62 @@ const FoundComponent = () => {
                   >
                     Others
                   </Button>
+                </div>
+              </div>
+            </Modal.Body>
+          </Modal>
+          <Modal
+            show={showLocationModal}
+            onHide={handleCloseModal}
+            dialogClassName="modal-dialog-centered modal-lg"
+          >
+            <Modal.Body
+              style={{
+                backgroundColor: "#FFFFF0",
+                borderRadius: "40px",
+                height: "400px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <div style={{ display: "flex", marginBottom: "20px" }}>
+                  <h2 style={styles.locationHeading}>
+                    Please input the place you want to search:
+                  </h2>
+                </div>
+                <div style={{ display: "flex" }}>
+                  <input
+                    style={styles.locationModalInput}
+                    type="text"
+                    value={selectedPlace}
+                    onChange={(event) => setSelectedPlace(event.target.value)}
+                  />
+                </div>
+                <div>
+                  <button
+                    className="btn btn-primary"
+                    onClick={handleLocationSearch}
+                    style={{
+                      margin: "10px",
+                      backgroundColor: "transparent",
+                      border: "none",
+                      height: "30px",
+                      width: "30px",
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faSearch}
+                      style={{ color: "black", height: "30px", width: "30px" }}
+                    />
+                  </button>
                 </div>
               </div>
             </Modal.Body>

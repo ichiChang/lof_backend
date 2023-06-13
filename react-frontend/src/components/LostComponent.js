@@ -1,9 +1,12 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import LostService from "../services/LostService";
 import CreateLostItem from "./CreateLostItem";
 import MyNavbar from "./MyNavBar";
 import More from "../images/more.png";
 import { Modal, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const LostComponent = () => {
   const [losts, setLosts] = useState([]);
@@ -12,8 +15,9 @@ const LostComponent = () => {
   const [isAnimated, setIsAnimated] = useState(false); // 新增状态
 
   const [showCategoryModal, setShowCategoryModal] = useState(false);
-  // eslint-disable-next-line no-unused-vars
+  const [showLocationModal, setShowLocationModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedPlace, setSelectedPlace] = useState("");
 
   useEffect(() => {
     setIsAnimated(true); // 设置动画状态为true，使元素滑入
@@ -52,11 +56,17 @@ const LostComponent = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setShowCategoryModal(false);
+    setShowLocationModal(false);
   };
 
   const handleShowCategoryModal = () => {
     setShowModal(false);
     setShowCategoryModal(true);
+  };
+
+  const handleShowLocationModal = () => {
+    setShowModal(false);
+    setShowLocationModal(true);
   };
 
   const handleCategoryClick = (category) => {
@@ -67,6 +77,17 @@ const LostComponent = () => {
       })
       .catch((error) => {
         console.error("Error fetching lost items by type:", error);
+      });
+    handleCloseModal();
+  };
+
+  const handleLocationSearch = () => {
+    LostService.getLostItemsByPlace(selectedPlace)
+      .then((data) => {
+        setLosts(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching lost items by place:", error);
       });
     handleCloseModal();
   };
@@ -146,6 +167,20 @@ const LostComponent = () => {
       borderWidth: "2px",
       zIndex: 0,
     },
+    locationModalInput: {
+      fontFamily: "Microsoft YaHei",
+      fontWeight: "bold",
+      fontSize: "20px",
+      borderRadius: "30px",
+      padding: "10px",
+      width: "400px",
+      height: "50px",
+      marginBottom: "30px",
+      border: "solid",
+      position: "relative",
+      borderWidth: "2px",
+      textAlign: "center",
+    },
     animateContainer: {
       opacity: 0, // 默认隐藏元素
       transform: "translateY(100px)", // 初始位置在下方
@@ -155,6 +190,10 @@ const LostComponent = () => {
     animateContainerVisible: {
       opacity: 1, // 显示元素
       transform: "translateY(0)", // 移动到初始位置
+    },
+    locationHeading: {
+      fontFamily: "'Lalezar', cursive",
+      fontSize: "28px",
     },
   };
 
@@ -247,7 +286,7 @@ const LostComponent = () => {
               >
                 <Button
                   variant="secondary"
-                  onClick={handleCloseModal}
+                  onClick={handleShowLocationModal}
                   style={{
                     borderRadius: "40px",
                     borderWidth: "4px",
@@ -454,6 +493,62 @@ const LostComponent = () => {
                   >
                     Others
                   </Button>
+                </div>
+              </div>
+            </Modal.Body>
+          </Modal>
+          <Modal
+            show={showLocationModal}
+            onHide={handleCloseModal}
+            dialogClassName="modal-dialog-centered modal-lg"
+          >
+            <Modal.Body
+              style={{
+                backgroundColor: "#FFFFF0",
+                borderRadius: "40px",
+                height: "400px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <div style={{ display: "flex", marginBottom: "20px" }}>
+                  <h2 style={styles.locationHeading}>
+                    Please input the place you want to search:
+                  </h2>
+                </div>
+                <div style={{ display: "flex" }}>
+                  <input
+                    style={styles.locationModalInput}
+                    type="text"
+                    value={selectedPlace}
+                    onChange={(event) => setSelectedPlace(event.target.value)}
+                  />
+                </div>
+                <div>
+                  <button
+                    className="btn btn-primary"
+                    onClick={handleLocationSearch}
+                    style={{
+                      margin: "10px",
+                      backgroundColor: "transparent",
+                      border: "none",
+                      height: "30px",
+                      width: "30px",
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faSearch}
+                      style={{ color: "black", height: "30px", width: "30px" }}
+                    />
+                  </button>
                 </div>
               </div>
             </Modal.Body>
