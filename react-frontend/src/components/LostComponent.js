@@ -5,6 +5,7 @@ import CreateLostItem from "./CreateLostItem";
 import MyNavbar from "./MyNavBar";
 import More from "../images/more.png";
 import { Modal, Button } from "react-bootstrap";
+import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
@@ -14,10 +15,19 @@ const LostComponent = () => {
   const [showModal, setShowModal] = useState(false);
   const [isAnimated, setIsAnimated] = useState(false); // 新增状态
 
+  const [activeTabs, setActiveTabs] = useState({});
+
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedPlace, setSelectedPlace] = useState("");
+
+  const toggleTab = (cardId, tab) => {
+    setActiveTabs((prevTabs) => ({
+      ...prevTabs,
+      [cardId]: tab,
+    }));
+  };
 
   useEffect(() => {
     setIsAnimated(true); // 设置动画状态为true，使元素滑入
@@ -230,37 +240,94 @@ const LostComponent = () => {
           </div>
 
           <div style={styles.cardContainer}>
-            {losts.map((lost) => (
-              <div key={lost.iid} className="card" style={styles.card}>
-                {lost.photo && (
-                  <img
-                    src={lost.photo}
-                    className="card-img-top"
-                    alt={lost.name}
-                    style={styles.cardImage}
-                  />
-                )}
-                <div className="card-body text-center" style={styles.cardBody}>
-                  <h5
-                    className="card-title"
-                    style={{ fontSize: "30px", fontWeight: "bold" }}
+            {losts.map((lost) => {
+              const cardId = lost.iid;
+              const activeTab = activeTabs[cardId] || "tab1";
+
+              return (
+                <div key={cardId} className="card" style={styles.card}>
+                  {lost.photo && (
+                    <img
+                      src={lost.photo}
+                      className="card-img-top"
+                      alt={lost.name}
+                      style={styles.cardImage}
+                    />
+                  )}
+                  <div
+                    className="card-body text-center"
+                    style={styles.cardBody}
                   >
-                    {lost.name}
-                  </h5>
-                  <p
-                    className="card-text"
-                    style={{ fontFamily: "Microsoft YaHei" }}
-                  >
-                    {lost.type}
-                    <br />
-                    {lost.pickUpPlace.name} {lost.pickUpPlace.floor}{" "}
-                    {lost.pickUpPlace.classroom}
-                    <br />
-                    {lost.pick_up_time}
-                  </p>
+                    <h5
+                      className="card-title"
+                      style={{
+                        fontSize: "30px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {lost.name}
+                    </h5>
+                    <div>
+                      <Nav tabs>
+                        <NavItem>
+                          <NavLink
+                            className={activeTab === "tab1" ? "active" : ""}
+                            onClick={() => toggleTab(cardId, "tab1")}
+                          >
+                            Info
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={activeTab === "tab2" ? "active" : ""}
+                            onClick={() => toggleTab(cardId, "tab2")}
+                          >
+                            Contact
+                          </NavLink>
+                        </NavItem>
+                      </Nav>
+                      <TabContent activeTab={activeTab}>
+                        <TabPane tabId="tab1">
+                          <p
+                            className="card-text"
+                            style={{
+                              fontFamily: "Microsoft YaHei",
+                              marginBottom: "10px",
+                              lineHeight: "30px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {lost.type}
+                            <br />
+                            {lost.pickUpPlace.name} {lost.pickUpPlace.floor}{" "}
+                            {lost.pickUpPlace.classroom}
+                            <br />
+                            {lost.pick_up_time}
+                          </p>
+                        </TabPane>
+                        <TabPane tabId="tab2">
+                          <p
+                            className="card-text"
+                            style={{
+                              fontFamily: "Microsoft YaHei",
+                              marginBottom: "10px",
+                              lineHeight: "30px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {lost.user.name}
+                            <br />
+                            {lost.user.contact.phone_number}
+                            <br />
+                            {lost.user.contact.email}
+                          </p>
+                        </TabPane>
+                      </TabContent>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <Modal
             show={showModal}

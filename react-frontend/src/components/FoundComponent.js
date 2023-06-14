@@ -5,6 +5,7 @@ import MyNavbar from "./MyNavBar";
 import CreateFoundItem from "./CreateFounditem";
 import More from "../images/more.png";
 import { Modal, Button } from "react-bootstrap";
+import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
@@ -13,6 +14,8 @@ const FoundComponent = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [isAnimated, setIsAnimated] = useState(false); // 新增状态
+
+  const [activeTabs, setActiveTabs] = useState({});
 
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
@@ -23,6 +26,13 @@ const FoundComponent = () => {
     setIsAnimated(true); // 设置动画状态为true，使元素滑入
     fetchFoundItems();
   }, []);
+
+  const toggleTab = (cardId, tab) => {
+    setActiveTabs((prevTabs) => ({
+      ...prevTabs,
+      [cardId]: tab,
+    }));
+  };
 
   const fetchFoundItems = () => {
     FoundService.getFounds()
@@ -87,7 +97,7 @@ const FoundComponent = () => {
         setFounds(data);
       })
       .catch((error) => {
-        console.error("Error fetching lost items by place:", error);
+        console.error("Error fetching found items by place:", error);
       });
     handleCloseModal();
   };
@@ -230,37 +240,95 @@ const FoundComponent = () => {
           </div>
 
           <div style={styles.cardContainer}>
-            {founds.map((found) => (
-              <div key={found.iid} className="card" style={styles.card}>
-                {found.photo && (
-                  <img
-                    src={found.photo}
-                    className="card-img-top"
-                    alt={found.name}
-                    style={styles.cardImage}
-                  />
-                )}
-                <div className="card-body text-center" style={styles.cardBody}>
-                  <h5
-                    className="card-title"
-                    style={{ fontSize: "30px", fontWeight: "bold" }}
+            {founds.map((found) => {
+              const cardId = found.iid;
+              const activeTab = activeTabs[cardId] || "tab1";
+
+              return (
+                <div key={cardId} className="card" style={styles.card}>
+                  {found.photo && (
+                    <img
+                      src={found.photo}
+                      className="card-img-top"
+                      alt={found.name}
+                      style={styles.cardImage}
+                    />
+                  )}
+                  <div
+                    className="card-body text-center"
+                    style={styles.cardBody}
                   >
-                    {found.name}
-                  </h5>
-                  <p
-                    className="card-text"
-                    style={{ fontFamily: "Microsoft YaHei" }}
-                  >
-                    {found.type}
-                    <br />
-                    {found.lastSeenPlace.name} {found.lastSeenPlace.floor}{" "}
-                    {found.lastSeenPlace.classroom}
-                    <br />
-                    {found.lastSeenTime}
-                  </p>
+                    <h5
+                      className="card-title"
+                      style={{
+                        fontSize: "30px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {found.name}
+                    </h5>
+                    <div>
+                      <Nav tabs>
+                        <NavItem>
+                          <NavLink
+                            className={activeTab === "tab1" ? "active" : ""}
+                            onClick={() => toggleTab(cardId, "tab1")}
+                          >
+                            Info
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={activeTab === "tab2" ? "active" : ""}
+                            onClick={() => toggleTab(cardId, "tab2")}
+                          >
+                            Contact
+                          </NavLink>
+                        </NavItem>
+                      </Nav>
+                      <TabContent activeTab={activeTab}>
+                        <TabPane tabId="tab1">
+                          <p
+                            className="card-text"
+                            style={{
+                              fontFamily: "Microsoft YaHei",
+                              marginBottom: "10px",
+                              fontWeight: "bold",
+                              lineHeight: "30px",
+                            }}
+                          >
+                            {found.type}
+                            <br />
+                            {found.lastSeenPlace.name}{" "}
+                            {found.lastSeenPlace.floor}{" "}
+                            {found.lastSeenPlace.classroom}
+                            <br />
+                            {found.lastSeenTime}
+                          </p>
+                        </TabPane>
+                        <TabPane tabId="tab2">
+                          <p
+                            className="card-text"
+                            style={{
+                              fontFamily: "Microsoft YaHei",
+                              marginBottom: "10px",
+                              fontWeight: "bold",
+                              lineHeight: "30px",
+                            }}
+                          >
+                            {found.user.name}
+                            <br />
+                            {found.user.contact.phone_number}
+                            <br />
+                            {found.user.contact.email}
+                          </p>
+                        </TabPane>
+                      </TabContent>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <Modal
             show={showModal}

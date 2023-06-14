@@ -21,7 +21,7 @@ const PersonalPage = () => {
         style={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "flex-start", // Adjusted alignment to left
+          alignItems: "flex-start",
           justifyContent: "flex-start",
           minHeight: "100vh",
           backgroundColor: "#FFFFF0",
@@ -36,12 +36,24 @@ const PersonalPage = () => {
             backgroundColor: "#FDDA0D",
             width: "800px",
             height: "400px",
-            borderBottomRightRadius: "100px", // Added border radius for bottom right corner
-            border: "none", // Removed border style
-            borderRight: "2px solid #000", // Added right border style
-            borderBottom: "2px solid #000", // Added bottom border style
+            borderBottomRightRadius: "100px",
+            border: "none",
+            borderRight: "2px solid #000",
+            borderBottom: "2px solid #000",
           }}
-        ></div>
+        >
+          <span
+            style={{
+              fontFamily: "Lalezar, cursive",
+              fontSize: "200px",
+              color: "#000000",
+              padding: "10px",
+              margin: "10px",
+            }}
+          >
+            HEY!
+          </span>
+        </div>
       </div>
     </div>
   );
