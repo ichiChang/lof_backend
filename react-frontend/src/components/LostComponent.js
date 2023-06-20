@@ -126,12 +126,12 @@ const LostComponent = () => {
       justifyContent: "space-between",
     },
     cardImage: {
-      height: "60%",
+      height: "50%",
       objectFit: "contain",
     },
     cardBody: {
       padding: "10px",
-      height: "40%",
+      height: "50%",
     },
     heading: {
       fontFamily: "'Lalezar', cursive",
@@ -285,6 +285,14 @@ const LostComponent = () => {
                             Contact
                           </NavLink>
                         </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={activeTab === "tab3" ? "active" : ""}
+                            onClick={() => toggleTab(cardId, "tab3")}
+                          >
+                            Remark
+                          </NavLink>
+                        </NavItem>
                       </Nav>
                       <TabContent activeTab={activeTab}>
                         <TabPane tabId="tab1">
@@ -292,7 +300,7 @@ const LostComponent = () => {
                             className="card-text"
                             style={{
                               fontFamily: "Microsoft YaHei",
-                              marginBottom: "10px",
+                              marginTop: "10px",
                               lineHeight: "30px",
                               fontWeight: "bold",
                             }}
@@ -310,7 +318,7 @@ const LostComponent = () => {
                             className="card-text"
                             style={{
                               fontFamily: "Microsoft YaHei",
-                              marginBottom: "10px",
+                              marginTop: "10px",
                               lineHeight: "30px",
                               fontWeight: "bold",
                             }}
@@ -320,6 +328,22 @@ const LostComponent = () => {
                             {lost.user.contact.phone_number}
                             <br />
                             {lost.user.contact.email}
+                          </p>
+                        </TabPane>
+                        <TabPane tabId="tab3">
+                          <p
+                            className="card-text"
+                            style={{
+                              fontFamily: "Microsoft YaHei",
+                              marginTop: "10px",
+                              lineHeight: "30px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Now Place: {lost.nowPlace.name}{" "}
+                            {lost.nowPlace.floor} {lost.nowPlace.classroom}
+                            <br />
+                            {lost.remark}
                           </p>
                         </TabPane>
                       </TabContent>

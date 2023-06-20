@@ -6,6 +6,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 const MyNavbar = () => {
+  const handleUserIconClick = () => {
+    const userId = localStorage.getItem("userId");
+    if (userId === "0") {
+      // 跳轉到 /login
+      window.location.href = "/login";
+    } else {
+      // 跳轉到 /personal
+      window.location.href = "/personal";
+    }
+  };
+
   return (
     <nav
       className="navbar navbar-expand-lg navbar-light"
@@ -102,13 +113,14 @@ const MyNavbar = () => {
         <ul className="navbar-nav ml-auto">
           <li className="nav-item">
             <Link
-              to="/login"
+              to="#"
               className="nav-link"
               style={{
                 color: "black",
                 marginRight: "15px",
                 marginTop: "2.5px",
               }}
+              onClick={handleUserIconClick}
             >
               <FontAwesomeIcon icon={faUser} style={{ fontSize: "2rem" }} />
             </Link>

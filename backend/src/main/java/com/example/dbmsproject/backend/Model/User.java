@@ -1,7 +1,5 @@
 package com.example.dbmsproject.backend.Model;
 
-
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,18 +24,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
-    @Column(name = "NAME" , nullable = false)
+    @Column(name = "NAME", nullable = false)
     @NotEmpty
     private String name;
-    
+
     @Column(name = "CREATE_DATE")
     private String createDate;
 
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "CON_ID", referencedColumnName = "cid")
     private Contact contact;
-    
-    public User(String name){
+
+    public User(String name) {
         this.name = name;
     }
 }

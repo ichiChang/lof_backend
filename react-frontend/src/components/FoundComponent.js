@@ -126,12 +126,12 @@ const FoundComponent = () => {
       justifyContent: "space-between",
     },
     cardImage: {
-      height: "60%",
+      height: "50%",
       objectFit: "contain",
     },
     cardBody: {
       padding: "10px",
-      height: "40%",
+      height: "50%",
     },
     heading: {
       fontFamily: "'Lalezar', cursive",
@@ -285,6 +285,14 @@ const FoundComponent = () => {
                             Contact
                           </NavLink>
                         </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={activeTab === "tab3" ? "active" : ""}
+                            onClick={() => toggleTab(cardId, "tab3")}
+                          >
+                            Remark
+                          </NavLink>
+                        </NavItem>
                       </Nav>
                       <TabContent activeTab={activeTab}>
                         <TabPane tabId="tab1">
@@ -292,7 +300,7 @@ const FoundComponent = () => {
                             className="card-text"
                             style={{
                               fontFamily: "Microsoft YaHei",
-                              marginBottom: "10px",
+                              marginTop: "10px",
                               fontWeight: "bold",
                               lineHeight: "30px",
                             }}
@@ -311,7 +319,7 @@ const FoundComponent = () => {
                             className="card-text"
                             style={{
                               fontFamily: "Microsoft YaHei",
-                              marginBottom: "10px",
+                              marginTop: "10px",
                               fontWeight: "bold",
                               lineHeight: "30px",
                             }}
@@ -321,6 +329,19 @@ const FoundComponent = () => {
                             {found.user.contact.phone_number}
                             <br />
                             {found.user.contact.email}
+                          </p>
+                        </TabPane>
+                        <TabPane tabId="tab3">
+                          <p
+                            className="card-text"
+                            style={{
+                              fontFamily: "Microsoft YaHei",
+                              marginTop: "10px",
+                              lineHeight: "30px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {found.remark}
                           </p>
                         </TabPane>
                       </TabContent>
